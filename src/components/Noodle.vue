@@ -48,7 +48,7 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.name1"
+                        v-model="editedItem.name_noo"
                         label="ชื่อเส้น"
                       ></v-text-field>
                     </v-col>
@@ -58,7 +58,7 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.quantity"
+                        v-model="editedItem.quantity_noo"
                         label="จำนวน(g)"
                         type="number"
                       ></v-text-field>
@@ -97,14 +97,14 @@
                         ref="menu"
                         v-model="menu"
                         :close-on-content-click="false"
-                        :return-value.sync="editedItem.date1"
+                        :return-value.sync="editedItem.date_noo"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="editedItem.date1"
+                            v-model="editedItem.date_noo"
                             label="วันผลิต"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -114,7 +114,7 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="editedItem.date1"
+                          v-model="editedItem.date_noo"
                           no-title
                           scrollable
                           locale = "th"
@@ -130,7 +130,7 @@
                           <v-btn
                             text
                             color="primary"
-                            @click="$refs.menu.save(editedItem.date1)"
+                            @click="$refs.menu.save(editedItem.date_noo)"
                           >
                             OK
                           </v-btn>
@@ -147,14 +147,14 @@
                         ref="menu2"
                         v-model="menu2"
                         :close-on-content-click="false"
-                        :return-value.sync="editedItem.date2"
+                        :return-value.sync="editedItem.exp_noo"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="editedItem.date2"
+                            v-model="editedItem.exp_noo"
                             label="วันหมดอายุ"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -164,7 +164,7 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="editedItem.date2"
+                          v-model="editedItem.exp_noo"
                           no-title
                           scrollable
                           locale = "th"
@@ -184,7 +184,7 @@
                           <v-btn
                             text
                             color="primary"
-                            @click="$refs.menu2.save(editedItem.date2)"
+                            @click="$refs.menu2.save(editedItem.exp_noo)"
                           >
                             OK
                           </v-btn>
@@ -238,29 +238,29 @@
         </v-icon>
         <v-icon
           small
-          @click="reloadPage(),deletetable(item.id)"
+          @click="reloadPage(),deletetable(item.id_noo)"
         >
           mdi-delete
         </v-icon>
       </template>
-       <template v-slot:[`item.date2`]="{item }">
+       <template v-slot:[`item.exp_noo`]="{item }">
        <v-chip 
-         :color="getColor3(item.date2)"
+         :color="getColor3(item.exp_noo)"
          dark
         >
         
         
-        {{item.date2}} 
+        {{item.exp_noo}} 
        </v-chip>
       </template>
-       <template v-slot:[`item.date1`]="{item }">
+       <template v-slot:[`item.date_noo`]="{item }">
        <v-chip 
-         :color="getColor4(item.date1)"
+         :color="getColor4(item.date_noo)"
          dark
         >
         
         
-        {{item.date1}} 
+        {{item.date_noo}} 
        </v-chip>
       </template>
     </v-data-table>
@@ -278,43 +278,43 @@ data() {
     dialogDelete: false,
     due:null,
     nowDate: new Date().toISOString().slice(0,10),
-    date1: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-    date2: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    date_noo: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    exp_noo: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
     menu: false,
     modal: false,
     modal1: false,
     menu2: false,
     // rawmaterial:{
-    //     name1:"",
-    //     quantity:"",
+    //     name_noo:"",
+    //     quantity_noo:"",
     //     data1:"",
-    //     date2:"",
+    //     exp_noo:"",
     // },
     headers: [
       {
         text: 'ชื่อวัตถุดิบ',
         align: 'start',
         sortable: false,
-        value: 'name1',
+        value: 'name_noo',
       },
-      { text: 'จำนวน(g)', value: 'quantity' },
-      { text: 'วันที่ผลิต', value: 'date1' },
-      { text: 'วันหมดอายุ', value: 'date2' },
+      { text: 'จำนวน(g)', value: 'quantity_noo' },
+      { text: 'วันที่ผลิต', value: 'date_noo' },
+      { text: 'วันหมดอายุ', value: 'exp_noo' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      name1: '',
-      quantity: '',
-      date1: '',
-      date2: '',
+      name_noo: '',
+      quantity_noo: '',
+      date_noo: '',
+      exp_noo: '',
     },
     defaultItem: {
-      name1: '',
-      quantity: '',
-      date1: '',
-      date2: '',
+      name_noo: '',
+      quantity_noo: '',
+      date_noo: '',
+      exp_noo: '',
     },
   }},
 
@@ -323,7 +323,7 @@ data() {
       return this.editedIndex === -1 ? 'เพิ่มวัตถุดิบ' : 'แก้ไขวัตถุดิบ'
     },
     // computedDateFormattedMomentjs() {
-    //   return this.date1 ? moment(this.date1).format('D M y'):''
+    //   return this.date_noo ? moment(this.date_noo).format('D M y'):''
     // },
     
   },
@@ -346,29 +346,29 @@ data() {
     initialize () {
       this.desserts = [
         {
-            name1: 'เนื้อหมู',
-            quantity: 0,
-            date1: 0,
-            date2: 159,
+            name_noo: 'เนื้อหมู',
+            quantity_noo: 0,
+            date_noo: 0,
+            exp_noo: 159,
          
         },
         {
-            name1: 'เนืื้อวัว',
-            quantity: 0,
-            date1: 0,
-            date2: 159,
+            name_noo: 'เนืื้อวัว',
+            quantity_noo: 0,
+            date_noo: 0,
+            exp_noo: 159,
         },
         {
-            name1: 'ตับ',
-            quantity: 0,
-            date1: 0,
-            date2: 159,
+            name_noo: 'ตับ',
+            quantity_noo: 0,
+            date_noo: 0,
+            exp_noo: 159,
         },
         {
-            name1: 'ลูกชิ้น',
-            quantity: 0,
-            date1: 5,
-            date2: 5,
+            name_noo: 'ลูกชิ้น',
+            quantity_noo: 0,
+            date_noo: 5,
+            exp_noo: 5,
         },
       ]
     },
@@ -417,12 +417,12 @@ data() {
     },
      sendData(){
         console.log("ส่งข้อมูลแล้ว")
-        // if(this.rawmaterial.name1  != '' && this.rawmaterial.quantity!= '' && this.rawmaterial.date1 != '' && this.rawmaterial.date2 ){
+        // if(this.rawmaterial.name_noo  != '' && this.rawmaterial.quantity_noo!= '' && this.rawmaterial.date_noo != '' && this.rawmaterial.exp_noo ){
         axios.post("http://localhost/menunoodle/menuapi5.php", {
-        name1:this.editedItem.name1,
-        quantity:this.editedItem.quantity,
-        date1:this.editedItem.date1,
-        date2:this.editedItem.date2,
+        name_noo:this.editedItem.name_noo,
+        quantity_noo:this.editedItem.quantity_noo,
+        date_noo:this.editedItem.date_noo,
+        exp_noo:this.editedItem.exp_noo,
         })
         this.save();this.reloadPage()
   },
@@ -439,19 +439,19 @@ data() {
 },    reloadPage() {
           window.location.reload();
           },
-      deletetable(id,){
-         console.log(id);
-         fetch('http://localhost/menunoodle/menuapi6.php/?deletenoodle='+id)
+      deletetable(id_noo){
+         console.log(id_noo);
+         fetch('http://localhost/menunoodle/menuapi6.php/?deletenoodle='+id_noo)
             .then(respuesta=>respuesta.json())
             .then((desserts)=>{
               console.log(desserts)
               
             }).catch(console.log)
           },
-       getColor3(date2){
-         if(date2<=this.date2) return 'red'
-     }, getColor4(date1){
-         if(date1==date1) return 'green'
+       getColor3(exp_noo){
+         if(exp_noo<=this.exp_noo) return 'red'
+     }, getColor4(date_noo){
+         if(date_noo==date_noo) return 'green'
      }, 
           }
 }

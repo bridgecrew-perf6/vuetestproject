@@ -15,7 +15,7 @@
       :headers="headers"
       :items="desserts"
       :search="search"
-      sort-by="calories"
+      
       class="elevation-1"
     >
       <template v-slot:top>
@@ -57,117 +57,17 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="menu.name12"
+                        v-model="menu.name_product"
                         label="ชื่อเมนู"
                       ></v-text-field>
                     </v-col>
-                    <!-- <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="menu.pig"
-                        label="เนื้อหมู(กรัม)"
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col>
                     <v-col
                       cols="12"
                       sm="6"
                       md="4"
                     >
                       <v-text-field
-                        v-model="menu.cow"
-                        label="เนื้อวัว(กรัม)"
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="menu.chicken"
-                        label="เนื้อไก่(กรัม)"
-                        required
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col>
-                     <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="menu.liver"
-                        label="ตับ(กรัม)"
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="menu.shrimp"
-                        label="กุ้ง(ตัว)"
-                        required
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col>
-                     <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="menu.squid"
-                        label="ปลาหมึก(กรัม)"
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                    <v-text-field
-                        v-model="menu.meatball"
-                        label="ลูกชิ้น(ลูก)"
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="menu.noodle"
-                        label="เส้น(กรัม)"
-                        required
-                        type="number"
-                        min=1
-                      ></v-text-field>
-                    </v-col> -->
-                     
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="menu.price"
+                        v-model="menu.price_product"
                         label="ราคา(บาท)"
                         required
                         type="number"
@@ -238,7 +138,7 @@
         </v-icon>
         <v-icon
           small
-          v-on:click="reloadPage(),deletetable(item.id)"
+          v-on:click="reloadPage(),deletetable(item.id_product)"
         >
           mdi-delete
         </v-icon>
@@ -266,23 +166,15 @@ data() {
     dialog: false,
     dialogDelete: false,
     menu:{ 
-      name12:"",
-      pig:"",
-      cow:"",
-      chicken:"",
-      liver :"",
-      shrimp:"",
-      squid:"",
-      meatball:"",
-      noodle:"",
-      price :"",
+     name_product:"",
+     price_product :"",
     },
     headers: [
       {
         text: 'ชื่อเมนู',
         align: 'start',
         sortable: false,
-        value: 'name12',
+        value: 'name_product',
       },
       // { text: 'เนื้อหมู(กรัม)', value: 'pig' },
       // { text: 'เนื้อวัว(กรัม)', value: 'cow' },
@@ -292,7 +184,7 @@ data() {
       // { text: 'ปลาหมึก(กรัม)', value: 'squid' },
       // { text: 'ลูกชิ้น(ลูก)', value: 'meatball' },
       // { text: 'เส้น(กรัม)', value: 'noodle' },
-      { text: 'ราคา(บาท)', value: 'price'},
+      { text: 'ราคา(บาท)', value: 'price_product'},
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [],
@@ -310,16 +202,8 @@ data() {
     //   price : ''
     // },
     defaultItem: {
-      name12: 'ก๋วยเตี๋ยว',
-      pig: '',
-      cow: '',
-      chicken: '',
-      liver : '',
-      shrimp: '',
-      squid: '',
-      meatball: '',
-      noodle: '',
-      price : ''
+      name_product: 'ก๋วยเตี๋ยว',
+      price_product: ''
     },
 }},
 
@@ -406,18 +290,10 @@ data() {
     sendData(e){
         e.preventDefault();
         console.log("ส่งข้อมูลแล้ว")
-        if(this.menu.name12  != '' && this.menu.price ){
+        if(this.menu.name_product  != '' && this.menu.price_product ){
         axios.post("http://localhost/menunoodle/menuapi.php", {
-        name12:this.menu.name12,
-        pig:this.menu.pig,
-        cow:this.menu.cow,
-        chicken:this.menu.chicken,
-        liver:this.menu.liver,
-        shrimp:this.menu.shrimp,
-        squid:this.menu.squid,
-        meatball:this.menu.meatball,
-        noodle:this.menu.noodle,
-        price:this.menu.price,
+        name_product:this.menu.name_product,
+        price_product:this.menu.price_product,
         })
         this.save();this.dialog=false;this.reloadPage()
     }},
@@ -433,9 +309,9 @@ data() {
                 }
             }).catch(console.log)
         },
-         deletetable(id,){
-         console.log(id);
-         fetch('http://localhost/menunoodle/menuapi2.php/?deletetablee='+id)
+         deletetable(id_product,){
+         console.log(id_product);
+         fetch('http://localhost/menunoodle/menuapi2.php/?deletetablee='+id_product)
             .then(respuesta=>respuesta.json())
             .then((desserts)=>{
               console.log(desserts)
@@ -444,9 +320,7 @@ data() {
           },
           reloadPage() {
           window.location.reload();
-          }
-
-    
+          },
   }
 }
 </script>

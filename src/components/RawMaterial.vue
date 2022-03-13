@@ -4,7 +4,7 @@
     <v-data-table
       :headers="headers"
       :items="desserts"
-      sort-by="date2"
+      sort-by="exp_ingre"
       class="elevation-1"
     >
   
@@ -48,7 +48,7 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.name1"
+                        v-model="editedItem.name_ingre"
                         label="ชื่อวัตถุดิบ"
                       ></v-text-field>
                     </v-col>
@@ -58,7 +58,7 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.quantity"
+                        v-model="editedItem.quantity_ingre"
                         label="จำนวน(g)"
                         type="number"
                       ></v-text-field>
@@ -97,14 +97,14 @@
                         ref="menu"
                         v-model="menu"
                         :close-on-content-click="false"
-                        :return-value.sync="editedItem.date1"
+                        :return-value.sync="editedItem.date_ingre"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="editedItem.date1"
+                            v-model="editedItem.date_ingre"
                             label="วันผลิต"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -114,7 +114,7 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="editedItem.date1"
+                          v-model="editedItem.date_ingre"
                           no-title
                           scrollable
                           locale = "th"
@@ -130,7 +130,7 @@
                           <v-btn
                             text
                             color="primary"
-                            @click="$refs.menu.save(editedItem.date1)"
+                            @click="$refs.menu.save(editedItem.date_ingre)"
                           >
                             OK
                           </v-btn>
@@ -147,14 +147,14 @@
                         ref="menu2"
                         v-model="menu2"
                         :close-on-content-click="false"
-                        :return-value.sync="editedItem.date2"
+                        :return-value.sync="editedItem.exp_ingre"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="editedItem.date2"
+                            v-model="editedItem.exp_ingre"
                             label="วันหมดอายุ"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -164,7 +164,7 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="editedItem.date2"
+                          v-model="editedItem.exp_ingre"
                           no-title
                           scrollable
                           locale = "th"
@@ -184,7 +184,7 @@
                           <v-btn
                             text
                             color="primary"
-                            @click="$refs.menu2.save(editedItem.date2)"
+                            @click="$refs.menu2.save(editedItem.exp_ingre)"
                           >
                             OK
                           </v-btn>
@@ -243,24 +243,24 @@
           mdi-delete
         </v-icon>
       </template>
-       <template v-slot:[`item.date2`]="{item }">
+       <template v-slot:[`item.exp_ingre`]="{item }">
        <v-chip 
-         :color="getColor3(item.date2)"
+         :color="getColor3(item.exp_ingre)"
          dark
         >
         
         
-        {{item.date2}} 
+        {{item.exp_ingre}} 
        </v-chip>
       </template>
-       <template v-slot:[`item.date1`]="{item }">
+       <template v-slot:[`item.date_ingre`]="{item }">
        <v-chip 
-         :color="getColor4(item.date1)"
+         :color="getColor4(item.date_ingre)"
          dark
         >
         
         
-        {{item.date1}} 
+        {{item.date_ingre}} 
        </v-chip>
       </template>
     </v-data-table>
@@ -278,43 +278,43 @@ data() {
     dialogDelete: false,
     due:null,
     nowDate: new Date().toISOString().slice(0,10),
-    date1: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-    date2: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    date_ingre: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    exp_ingre: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
     menu: false,
     modal: false,
     modal1: false,
     menu2: false,
     // rawmaterial:{
-    //     name1:"",
-    //     quantity:"",
+    //     name_ingre:"",
+    //     quantity_ingre:"",
     //     data1:"",
-    //     date2:"",
+    //     exp_ingre:"",
     // },
     headers: [
       {
         text: 'ชื่อวัตถุดิบ',
         align: 'start',
         sortable: false,
-        value: 'name1',
+        value: 'name_ingre',
       },
-      { text: 'จำนวน(g)', value: 'quantity' },
-      { text: 'วันที่ผลิต', value: 'date1' },
-      { text: 'วันหมดอายุ', value: 'date2' },
+      { text: 'จำนวน(g)', value: 'quantity_ingre' },
+      { text: 'วันที่ผลิต', value: 'date_ingre' },
+      { text: 'วันหมดอายุ', value: 'exp_ingre' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      name1: '',
-      quantity: '',
-      date1: '',
-      date2: '',
+      name_ingre: '',
+      quantity_ingre: '',
+      date_ingre: '',
+      exp_ingre: '',
     },
     defaultItem: {
-      name1: '',
-      quantity: '',
-      date1: '',
-      date2: '',
+      name_ingre: '',
+      quantity_ingre: '',
+      date_ingre: '',
+      exp_ingre: '',
     },
   }},
 
@@ -323,7 +323,7 @@ data() {
       return this.editedIndex === -1 ? 'เพิ่มวัตถุดิบ' : 'แก้ไขวัตถุดิบ'
     },
     // computedDateFormattedMomentjs() {
-    //   return this.date1 ? moment(this.date1).format('D M y'):''
+    //   return this.date_ingre ? moment(this.date_ingre).format('D M y'):''
     // },
     
   },
@@ -346,29 +346,29 @@ data() {
     initialize () {
       this.desserts = [
         {
-            name1: 'เนื้อหมู',
-            quantity: 0,
-            date1: 0,
-            date2: 159,
+            name_ingre: 'เนื้อหมู',
+            quantity_ingre: 0,
+            date_ingre: 0,
+            exp_ingre: 159,
          
         },
         {
-            name1: 'เนืื้อวัว',
-            quantity: 0,
-            date1: 0,
-            date2: 159,
+            name_ingre: 'เนืื้อวัว',
+            quantity_ingre: 0,
+            date_ingre: 0,
+            exp_ingre: 159,
         },
         {
-            name1: 'ตับ',
-            quantity: 0,
-            date1: 0,
-            date2: 159,
+            name_ingre: 'ตับ',
+            quantity_ingre: 0,
+            date_ingre: 0,
+            exp_ingre: 159,
         },
         {
-            name1: 'ลูกชิ้น',
-            quantity: 0,
-            date1: 5,
-            date2: 5,
+            name_ingre: 'ลูกชิ้น',
+            quantity_ingre: 0,
+            date_ingre: 5,
+            exp_ingre: 5,
         },
       ]
     },
@@ -417,12 +417,12 @@ data() {
     },
      sendData(){
         console.log("ส่งข้อมูลแล้ว")
-        // if(this.rawmaterial.name1  != '' && this.rawmaterial.quantity!= '' && this.rawmaterial.date1 != '' && this.rawmaterial.date2 ){
+        // if(this.rawmaterial.name_ingre  != '' && this.rawmaterial.quantity_ingre!= '' && this.rawmaterial.date_ingre != '' && this.rawmaterial.exp_ingre ){
         axios.post("http://localhost/menunoodle/menuapi3.php", {
-        name1:this.editedItem.name1,
-        quantity:this.editedItem.quantity,
-        date1:this.editedItem.date1,
-        date2:this.editedItem.date2,
+        name:this.editedItem.name_ingre,
+        quantity_ingre:this.editedItem.quantity_ingre,
+        date_ingre:this.editedItem.date_ingre,
+        exp_ingre:this.editedItem.exp_ingre,
         })
         this.save();this.reloadPage()
   },
@@ -448,10 +448,10 @@ data() {
               
             }).catch(console.log)
           },
-       getColor3(date2){
-         if(date2<=this.date2) return 'red'
-     }, getColor4(date1){
-         if(date1==date1) return 'green'
+       getColor3(exp_ingre){
+         if(exp_ingre<=this.exp_ingre) return 'red'
+     }, getColor4(date_ingre){
+         if(date_ingre==date_ingre) return 'green'
      },
 
           }
