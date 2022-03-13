@@ -85,7 +85,7 @@
       <v-app >
         <v-card>
           <v-card-title>
-            การทำรายการที่ผ่านมา
+            <h3>การทำรายการที่ผ่านมา</h3>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -99,7 +99,15 @@
             :headers="headers"
             :items="desserts"
             :search="search"
-          ></v-data-table>
+          ><template v-slot:[`item.timebill`]="{ item }">
+        <v-chip
+         :color="getColor2(item.timebill)"
+         dark
+        >      
+        <v-icon>check_circle</v-icon>      
+       </v-chip>
+      </template></v-data-table>
+          
 
         </v-card>
       </v-app>
@@ -108,86 +116,67 @@
 </template>
 
 <script>
-export default {
-  name: 'finance',
-  data() {
-    return {
-      search: "",
-      headers: [
-        {
-          text: "วัน/เดือน/ปี",
-          align: "start",
-          sortable: false,
-          value: "date",
-        },
-        { text: "รายละเอียด", value: "details" },
-        { text: "จำนวน", value: "quantity" },
-        { text: "สถานะ", value: "status" },
-      ],
-      desserts: [
-        {
-          date: "01/03/2564",
-          details: '#001',
-          quantity: 80,
-          a: "dasaf",
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "11/09/2564",
-          details: '#002',
-          quantity: 200,
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "21/08/2564",
-          details: '#003',
-          quantity: 420,
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "31/12/2564",
-          details: '#004',
-          quantity: 560,
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "04/12/2564",
-          details: '#005',
-          quantity: 120,
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "01/06/2564",
-          details: '#006',
-          quantity: 200,
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "24/11/2564",
-          details: '#007',
-          quantity: 80,
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "14/07/2564",
-          details: '#008',
-          quantity: 150,
-          status: "เสร็จสิ้น",
-        },
-        {
-          date: "07/05/2564",
-          details: '#009',
-          quantity: 160,
-          status: "เสร็จสิ้น",
-        },
-      ],
-    };
-  },
-};
-</script>
+// import axios from 'axios';
+  export default {
+    data: () => ({
+    dialog: false,
+    dialogDelete: false,
+    headers: [
+      {
+        text: 'ลำดับ',
+        align: 'start',
+        sortable: false,
+        value: 'id_bill',
+      },
+      { text: 'จำนวน(บาท)', value: 'totalbill' },
+      { text: 'วันที่', value: 'datebill' },
+      { text: 'สถานะ', value: 'timebill' },
+      
+    ],
+    desserts: [],
+   
+  }),
 
-<style>
-.a{
-  background-color: blue;
+  
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    
+  },
+
+  created () {
+    this.consultaritems()
+  },
+
+  methods: {
+    consultaritems(){
+            fetch('http://localhost/menunoodle/finanapi.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts=datosRespuesta;
+                }
+            }).catch(console.log)
+        },
+         
+
+      // Color of Status
+   
+      getColor2(timebill){
+         if(timebill==timebill) return 'green'
+     },
+    
+
+
+
+     
+
+  },
 }
-</style>
+
+</script>

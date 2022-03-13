@@ -130,36 +130,22 @@
 
 
        <!-- Show Status -->
-      <template v-slot:[`item.id_bill`]="{ item }">
+      <template v-slot:[`item.timebill`]="{ item }">
         <v-chip
-         :color="getColor(item.id_bill)"
+         :color="getColor2(item.timebill)"
          dark
         >      
-        <v-icon>watch_later</v-icon>      
+        <v-icon>check_circle</v-icon>      
        </v-chip>
       </template>
 
 
       
       <!-- Edit & Delete -->
-      <template v-slot:[`item.actions`]="{ item }">
-       <v-chip
-         :color="getColor2(item.actions)"
-         dark
-        >      
-        <v-icon @click="reloadPage(),deletetable(item.id_queue)">delete</v-icon>      
-       </v-chip>
-      </template>
+      
 
 
-      <template v-slot:[`item.ac`]="{ item }">
-       <v-chip
-         :color="getColor3(item.ac)"
-         dark
-        >      
-        <v-icon @click="deleteItem">receipt_long</v-icon>      
-       </v-chip>
-      </template>
+      
     </v-data-table>
   </v-app>
 </div>
@@ -169,7 +155,6 @@
 // import axios from 'axios';
   export default {
     data: () => ({
-    dates:'',
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -177,157 +162,33 @@
         text: 'ลำดับ',
         align: 'start',
         sortable: false,
-        value: 'id_queue',
+        value: 'id_bill',
       },
-      { text: 'เวลาที่สั่ง', value: 'timebill' },
-      { text: 'วันที่ที่สั่ง', value: 'datebill' },
-      { text: 'Status', value: 'id_bill' },
-      { text: 'Actions', value: 'actions', sortable: false },
-    { text: 'Detail', value: 'ac', sortable: false },
+      { text: 'จำนวน(บาท)', value: 'totalbill' },
+      { text: 'วันที่', value: 'datebill' },
+      { text: 'สถานะ', value: 'timebill' },
+      
     ],
     desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      date: 0,
-      time: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      date: 0,
-      time: 0,
-      protein: 0,
-    },
+   
   }),
 
-  computed: {
-    formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    },
-  },
+  
 
   watch: {
     dialog (val) {
       val || this.close()
     },
-    dialogDelete (val) {
-      val || this.closeDelete()
-    },
+    
   },
 
   created () {
-    this.initialize()
     this.consultaritems()
   },
 
   methods: {
-    initialize () {
-      this.desserts = [
-    
-        {
-          name: '#001',
-          calories: 2000,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 4.3,
-        },
-        {
-          name: '#002',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 3.9,
-        },
-        {
-          name: '#003',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 0.0,
-        },
-        {
-          name: '#004',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 0,
-        },
-        {
-          name: '#005',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 6.5,
-        },
-        {
-          name: '#006',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 4.9,
-        },
-        {
-          name: '#007',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 7,
-        },{
-          name: '#008',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 6.0,
-        },
-      ]
-    },
-
-    editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-
-    deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-
-    deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
-
-    close () {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    closeDelete () {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    save () {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
-      }
-      this.close()
-    },
     consultaritems(){
-            fetch('http://localhost/menunoodle/queueOr.php')
+            fetch('http://localhost/menunoodle/finanapi.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
@@ -338,31 +199,14 @@
                 }
             }).catch(console.log)
         },
-         deletetable(id_queue){
-         console.log(id_queue);
-         fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_queue)
-            .then(respuesta=>respuesta.json())
-            .then((desserts)=>{
-              console.log(desserts)
-              
-            }).catch(console.log)
-          },
-          reloadPage() {
-          window.location.reload();
-          },
+         
 
       // Color of Status
-      getColor (id_bill) {
-        if (id_bill == 1) return '#4CAF50'
-        else return '#FF9800' 
-       
+   
+      getColor2(timebill){
+         if(timebill==timebill) return 'green'
      },
-      getColor2(actions,){
-         if(actions==actions) return 'red'
-     },
-     getColor3(ac){
-         if(ac==ac) return '#1E88E5'
-     },
+    
 
 
 

@@ -169,7 +169,6 @@
 // import axios from 'axios';
   export default {
     data: () => ({
-    dates:'',
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -186,146 +185,23 @@
     { text: 'Detail', value: 'ac', sortable: false },
     ],
     desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      date: 0,
-      time: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      date: 0,
-      time: 0,
-      protein: 0,
-    },
+   
   }),
 
-  computed: {
-    formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    },
-  },
+  
 
   watch: {
     dialog (val) {
       val || this.close()
     },
-    dialogDelete (val) {
-      val || this.closeDelete()
-    },
+    
   },
 
   created () {
-    this.initialize()
     this.consultaritems()
   },
 
   methods: {
-    initialize () {
-      this.desserts = [
-    
-        {
-          name: '#001',
-          calories: 2000,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 4.3,
-        },
-        {
-          name: '#002',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 3.9,
-        },
-        {
-          name: '#003',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 0.0,
-        },
-        {
-          name: '#004',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 0,
-        },
-        {
-          name: '#005',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 6.5,
-        },
-        {
-          name: '#006',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 4.9,
-        },
-        {
-          name: '#007',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 7,
-        },{
-          name: '#008',
-          calories: 199,
-          date: '26/1/2565',
-          time: '18:00',
-          protein: 6.0,
-        },
-      ]
-    },
-
-    editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-
-    deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-
-    deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
-
-    close () {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    closeDelete () {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    save () {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
-      }
-      this.close()
-    },
     consultaritems(){
             fetch('http://localhost/menunoodle/queueOr.php')
             .then(respuesta=>respuesta.json())

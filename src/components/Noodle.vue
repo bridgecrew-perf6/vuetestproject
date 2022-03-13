@@ -12,7 +12,7 @@
         <v-toolbar
           flat
         >
-          <v-toolbar-title>วัตถุดิบ</v-toolbar-title>
+          <v-toolbar-title>เส้น</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -31,7 +31,7 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                เพิ่มวัตถุดิบ
+                เพิ่มเส้น
               </v-btn>
             </template>
             <v-card>
@@ -292,7 +292,7 @@ data() {
     // },
     headers: [
       {
-        text: 'ชื่อวัตถุดิบ',
+        text: 'ชื่อเส้น',
         align: 'start',
         sortable: false,
         value: 'name_noo',
@@ -320,7 +320,7 @@ data() {
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'เพิ่มวัตถุดิบ' : 'แก้ไขวัตถุดิบ'
+      return this.editedIndex === -1 ? 'เพิ่มเส้น' : 'แก้ไขเส้น'
     },
     // computedDateFormattedMomentjs() {
     //   return this.date_noo ? moment(this.date_noo).format('D M y'):''
