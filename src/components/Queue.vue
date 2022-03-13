@@ -117,8 +117,8 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5" center>รายละเอียด</v-card-title>
-              <v-card-actions v-for="desserts in desserts" :key="desserts.id">
-                {{desserts.id_bill}}
+              <v-card-actions v-for="desserts1 in desserts1" :key="desserts1.id">
+                {{desserts1.id_product}}
                 <v-spacer></v-spacer>
                 
                 <v-spacer></v-spacer>
@@ -185,6 +185,7 @@
     { text: 'Detail', value: 'ac', sortable: false },
     ],
     desserts: [],
+    desserts1: [],
    
   }),
 
@@ -202,6 +203,7 @@
 
   created () {
     this.consultaritems()
+    this.datatDetail()
   },
 
   methods: {
@@ -216,7 +218,18 @@
                     this.desserts=datosRespuesta;
                 }
             }).catch(console.log)
-        },
+        },datatDetail(){
+            fetch('http://localhost/menunoodle/queueOrDetail.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts1=datosRespuesta;
+                }
+            }).catch(console.log)
+            },
          deletetable(id_queue){
          console.log(id_queue);
          fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_queue)
@@ -242,11 +255,6 @@
      getColor3(ac){
          if(ac==ac) return '#1E88E5'
      },
-
-
-
-     
-
   },
 }
 </script>
