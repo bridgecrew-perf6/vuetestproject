@@ -117,10 +117,10 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5" center>รายละเอียด</v-card-title>
-              <v-card-actions>
+              <v-card-actions v-for="desserts in desserts" :key="desserts.id">
+                {{desserts.id_bill}}
                 <v-spacer></v-spacer>
-                <!-- <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn> -->
+                
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -157,7 +157,7 @@
          :color="getColor3(item.ac)"
          dark
         >      
-        <v-icon @click="deleteItem">receipt_long</v-icon>      
+        <v-icon @click="dialogDelete=true">receipt_long</v-icon>      
        </v-chip>
       </template>
     </v-data-table>
@@ -193,6 +193,9 @@
   watch: {
     dialog (val) {
       val || this.close()
+    },
+     dialogDelete (val) {
+      val || this.closeDelete()
     },
     
   },
