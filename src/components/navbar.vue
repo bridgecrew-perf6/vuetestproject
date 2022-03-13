@@ -66,6 +66,7 @@ export default {
         { icon: "dashboard", text: "Dashboard", route: "/dashboard" },
         { icon: "dashboard", text: "Raw Material", route: "/RawMaterial" },
         { icon: "dashboard", text: "Noodle", route: "/Noodle" },
+        { icon: "dashboard", text: "test", route: "/test" },
         
       ],
     };

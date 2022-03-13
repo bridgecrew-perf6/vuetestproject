@@ -130,9 +130,9 @@
 
 
        <!-- Show Status -->
-      <template v-slot:[`item.calories`]="{ item }">
+      <template v-slot:[`item.id_bill`]="{ item }">
         <v-chip
-         :color="getColor(item.calories)"
+         :color="getColor(item.id_bill)"
          dark
         >      
         <v-icon>watch_later</v-icon>      
@@ -147,7 +147,7 @@
          :color="getColor2(item.actions)"
          dark
         >      
-        <v-icon @click="deleteItem">delete</v-icon>      
+        <v-icon @click="reloadPage(),deletetable(item.id_queue)">delete</v-icon>      
        </v-chip>
       </template>
 
@@ -174,16 +174,16 @@
     dialogDelete: false,
     headers: [
       {
-        text: 'Bill',
+        text: 'ลำดับ',
         align: 'start',
         sortable: false,
-        value: 'name',
+        value: 'id_queue',
       },
-      { text: 'Time', value: 'time' },
-      { text: 'Date', value: 'date' },
-      { text: 'Status', value: 'calories' },
+      { text: 'เวลาที่สั่ง', value: 'timebill' },
+      { text: 'วันที่ที่สั่ง', value: 'datebill' },
+      { text: 'Status', value: 'id_bill' },
       { text: 'Actions', value: 'actions', sortable: false },
-        { text: 'Detail', value: 'ac', sortable: false },
+    { text: 'Detail', value: 'ac', sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -220,6 +220,7 @@
 
   created () {
     this.initialize()
+    this.consultaritems()
   },
 
   methods: {
@@ -325,10 +326,34 @@
       }
       this.close()
     },
+    consultaritems(){
+            fetch('http://localhost/menunoodle/queueOr.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts=datosRespuesta;
+                }
+            }).catch(console.log)
+        },
+         deletetable(id_queue){
+         console.log(id_queue);
+         fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_queue)
+            .then(respuesta=>respuesta.json())
+            .then((desserts)=>{
+              console.log(desserts)
+              
+            }).catch(console.log)
+          },
+          reloadPage() {
+          window.location.reload();
+          },
 
       // Color of Status
-      getColor (calories) {
-        if (calories > 200) return '#4CAF50'
+      getColor (id_bill) {
+        if (id_bill == 1) return '#4CAF50'
         else return '#FF9800' 
        
      },
@@ -341,22 +366,7 @@
 
 
 
-      getTime(){
-        let timestamp = new Date();
- 
-        var date = timestamp.getDate();
-        let month = timestamp.getMonth()+1;
-        let year = timestamp.getFullYear();
-           
-        // console.log(`${date}/${month}/${year}`);
-
-         let Date = (date+'/'+month+'/'+year)
-
-         this.dates = date ;
-
-         return date
-        
-      }
+     
 
   },
 }

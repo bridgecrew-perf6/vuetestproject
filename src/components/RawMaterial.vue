@@ -419,7 +419,7 @@ data() {
         console.log("ส่งข้อมูลแล้ว")
         // if(this.rawmaterial.name_ingre  != '' && this.rawmaterial.quantity_ingre!= '' && this.rawmaterial.date_ingre != '' && this.rawmaterial.exp_ingre ){
         axios.post("http://localhost/menunoodle/menuapi3.php", {
-        name:this.editedItem.name_ingre,
+        name_ingre:this.editedItem.name_ingre,
         quantity_ingre:this.editedItem.quantity_ingre,
         date_ingre:this.editedItem.date_ingre,
         exp_ingre:this.editedItem.exp_ingre,
