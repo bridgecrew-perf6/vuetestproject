@@ -64,8 +64,8 @@ export default {
         { icon: "add_circle", text: "Addmenu", route: "/Addmenu" },
         { icon: "account_balance_wallet", text: "Finance", route: "/finance" },
         { icon: "dashboard", text: "Dashboard", route: "/dashboard" },
-        { icon: "dashboard", text: "Raw Material", route: "/RawMaterial" },
-        { icon: "dashboard", text: "Noodle", route: "/Noodle" },
+        { icon: "set_meal", text: "Raw Material", route: "/RawMaterial" },
+        { icon: "ramen_dining", text: "Noodle", route: "/Noodle" },
         { icon: "dashboard", text: "test", route: "/test" },
         
       ],
