@@ -172,15 +172,10 @@
     dialog: false,
     dialogDelete: false,
     headers: [
-      {
-        text: 'ลำดับ',
-        align: 'start',
-        sortable: false,
-        value: 'id_queue',
-      },
+      {text: 'ลำดับ',align: 'start',sortable: false,value: 'id_queue'},
       { text: 'เวลาที่สั่ง', value: 'timebill' },
       { text: 'วันที่ที่สั่ง', value: 'datebill' },
-      { text: 'Status', value: 'id_bill' },
+      { text: 'สถานะ', value: 'id_bill' },
       { text: 'Actions', value: 'actions', sortable: false },
     { text: 'Detail', value: 'ac', sortable: false },
     ],
@@ -188,8 +183,6 @@
     desserts1: [],
    
   }),
-
-  
 
   watch: {
     dialog (val) {
@@ -201,10 +194,10 @@
     
   },
 
-  created () {
-    this.consultaritems()
-    this.datatDetail()
-  },
+    created () {
+      this.consultaritems()
+      this.datatDetail()
+    },
 
   methods: {
     consultaritems(){
@@ -218,7 +211,8 @@
                     this.desserts=datosRespuesta;
                 }
             }).catch(console.log)
-        },datatDetail(){
+    },
+    datatDetail(){
             fetch('http://localhost/menunoodle/queueOrDetail.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
@@ -229,31 +223,30 @@
                     this.desserts1=datosRespuesta;
                 }
             }).catch(console.log)
-            },
-         deletetable(id_queue){
-         console.log(id_queue);
-         fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_queue)
+      },
+    deletetable(id_queue){
+            console.log(id_queue);
+            fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_queue)
             .then(respuesta=>respuesta.json())
             .then((desserts)=>{
               console.log(desserts)
-              
             }).catch(console.log)
-          },
-          reloadPage() {
-          window.location.reload();
-          },
+    },
+    reloadPage() {
+            window.location.reload();
+    },
 
       // Color of Status
-      getColor (id_bill) {
-        if (id_bill == 1) return '#4CAF50'
-        else return '#FF9800' 
+    getColor (id_bill) {
+            if (id_bill == 1) return '#4CAF50'
+            else return '#FF9800' 
        
-     },
-      getColor2(actions,){
-         if(actions==actions) return 'red'
-     },
-     getColor3(ac){
-         if(ac==ac) return '#1E88E5'
+    },
+    getColor2(actions,){
+            if(actions==actions) return 'red'
+    },
+    getColor3(ac){
+            if(ac==ac) return '#1E88E5'
      },
   },
 }
