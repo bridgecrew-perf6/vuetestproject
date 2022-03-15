@@ -16,8 +16,8 @@
                       <div class="mb-4">
                           <v-icon color="white" size="50" >monetization_on</v-icon>
                       </div>
-                      <v-list-item-title class="headline mb-1 white--text">
-                        1,950฿
+                      <v-list-item-title class="headline mb-1 white--text"  v-for="desserts2 in desserts2" :key="desserts2">
+                        {{desserts2.ts}} ฿
                       </v-list-item-title>
                       <v-list-item-subtitle class="white--text">รายได้ต่อวัน</v-list-item-subtitle>
                     </v-list-item-content>
@@ -134,6 +134,7 @@
       
     ],
     desserts: [],
+    desserts2: [],
    
   }),
 
@@ -148,6 +149,7 @@
 
   created () {
     this.consultaritems()
+    this.consultaritems2()
   },
 
   methods: {
@@ -160,6 +162,18 @@
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
                     this.desserts=datosRespuesta;
+                }
+            }).catch(console.log)
+        },
+        consultaritems2(){
+            fetch('http://localhost/menunoodle/finanapi2.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts2=datosRespuesta;
                 }
             }).catch(console.log)
         },

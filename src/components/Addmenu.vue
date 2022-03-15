@@ -1,7 +1,16 @@
 <template>
   <div id="app">
   <v-app id="inspire">
-      <v-card-title>
+     
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      :search="search"
+      
+      class="elevation-1"
+    >
+      <template v-slot:top> 
+        <v-card-title>
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -10,15 +19,7 @@
           single-line
           hide-details
         ></v-text-field>
-      </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :search="search"
-      
-      class="elevation-1"
-    >
-      <template v-slot:top>
+        </v-card-title>
         <v-toolbar
           flat
         >

@@ -1,9 +1,9 @@
-<template>
-  <div id="app">
+<template  >
+  <div id="app" >
   <v-app id="inspire">
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="(desserts2)"
       sort-by=""
       class="elevation-1"
     >
@@ -117,10 +117,13 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5" center>รายละเอียด</v-card-title>
-              <v-card-actions>
+              <v-card-actions v-for="desserts3 in desserts3" :key="desserts3.id_bill">
+                <v-col row>
+                <div >{{desserts3.name_product}}</div> 
+                </v-col>
+                <div >{{desserts3.quantity}}</div>
+                <v-col row>ชาม</v-col>
                 <v-spacer></v-spacer>
-                <!-- <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn> -->
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -130,14 +133,14 @@
 
 
        <!-- Show Status -->
-      <template v-slot:[`item.id_bill`]="{ item }">
+      <!-- <template v-slot:[`item.id_bill`]="{ item }">
         <v-chip
          :color="getColor(item.id_bill)"
          dark
         >      
         <v-icon>watch_later</v-icon>      
        </v-chip>
-      </template>
+      </template> -->
 
 
       
@@ -147,7 +150,7 @@
          :color="getColor2(item.actions)"
          dark
         >      
-        <v-icon @click="reloadPage(),deletetable(item.id_queue)">delete</v-icon>      
+        <v-icon @click="reloadPage(),deletetable(item.id_bill)">delete</v-icon>      
        </v-chip>
       </template>
 
@@ -157,7 +160,7 @@
          :color="getColor3(item.ac)"
          dark
         >      
-        <v-icon @click="deleteItem">receipt_long</v-icon>      
+        <v-icon @click="dialogDelete=true">receipt_long</v-icon>      
        </v-chip>
       </template>
     </v-data-table>
@@ -169,38 +172,38 @@
 // import axios from 'axios';
   export default {
     data: () => ({
-    dates:'',
     dialog: false,
     dialogDelete: false,
     headers: [
-      {
-        text: 'ลำดับ',
-        align: 'start',
-        sortable: false,
-        value: 'id_queue',
-      },
+      { text: 'ลำดับ',align: 'start',sortable: false,value: 'id_bill'},
       { text: 'เวลาที่สั่ง', value: 'timebill' },
       { text: 'วันที่ที่สั่ง', value: 'datebill' },
-      { text: 'Status', value: 'id_bill' },
-      { text: 'Actions', value: 'actions', sortable: false },
-    { text: 'Detail', value: 'ac', sortable: false },
+      // { text: 'สถานะ', value: 'id_bill' },
+     { text: 'รายละเอียด',value: 'ac', sortable: false }, 
+     { text: '', value: 'actions', sortable: false },
+
     ],
     desserts: [],
-   
+    desserts1: [],
+    desserts2: [],
+    desserts3: [],
   }),
-
-  
 
   watch: {
     dialog (val) {
       val || this.close()
     },
+     dialogDelete (val) {
+      val || this.closeDelete()
+    },
     
   },
 
-  created () {
-    this.consultaritems()
-  },
+    created () {
+      this.consultaritems()
+      this.datatDetail()
+       this.datatDetail1()
+    },
 
   methods: {
     consultaritems(){
@@ -214,37 +217,64 @@
                     this.desserts=datosRespuesta;
                 }
             }).catch(console.log)
-        },
-         deletetable(id_queue){
-         console.log(id_queue);
-         fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_queue)
+    },
+   
+    deletetable(id_bill){
+            console.log(id_bill);
+            fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_bill)
             .then(respuesta=>respuesta.json())
             .then((desserts)=>{
               console.log(desserts)
-              
             }).catch(console.log)
-          },
-          reloadPage() {
-          window.location.reload();
-          },
+    },
+    datatDetail1(){
+            fetch('http://localhost/menunoodle/testdatabase2.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts3=datosRespuesta;
+                }
+            }).catch(console.log)
+      },
+      datatDetail(){
+            fetch('http://localhost/menunoodle/testdatabase.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts2=datosRespuesta;
+                }
+            }).catch(console.log)
+      },
+     
+      
+    
+    reloadPage() {
+            window.location.reload();
+    },
 
       // Color of Status
-      getColor (id_bill) {
-        if (id_bill == 1) return '#4CAF50'
-        else return '#FF9800' 
+    getColor (id_bill) {
+            if (id_bill == 1) return '#4CAF50'
+            else return '#FF9800' 
        
+    },
+    getColor2(actions,){
+            if(actions==actions) return 'red'
+    },
+    getColor3(ac){
+            if(ac==ac) return '#1E88E5'
      },
-      getColor2(actions,){
-         if(actions==actions) return 'red'
-     },
-     getColor3(ac){
-         if(ac==ac) return '#1E88E5'
-     },
-
-
-
-     
-
   },
 }
 </script>
+<style scoped>
+.aa {
+        background-image: url(https://bottomlineis.co/uploads/images/image_750x_5d691a8d5f2f9.jpg);
+    }
+</style>

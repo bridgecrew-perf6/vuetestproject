@@ -21,11 +21,12 @@
       v-model="drawer"
       class="blue-grey lighten-3"
       temporary
+      
     >
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-uppercase black--text">
-            <v-icon>dashboard</v-icon>
+            <!-- <v-icon>dashboard</v-icon> -->
             <span class="font-weight-light">Teow</span>
             <span>Teow</span>
           </v-list-item-title>
@@ -67,6 +68,8 @@ export default {
         { icon: "set_meal", text: "Raw Material", route: "/RawMaterial" },
         { icon: "ramen_dining", text: "Noodle", route: "/Noodle" },
         { icon: "dashboard", text: "test", route: "/test" },
+         { icon: "dashboard", text: "tables", route: "/tables" },
+        
         
       ],
     };

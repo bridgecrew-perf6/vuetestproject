@@ -117,8 +117,8 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5" center>รายละเอียด</v-card-title>
-              <v-card-actions v-for="desserts1 in desserts1" :key="desserts1.id">
-                {{desserts1.id_product}}
+              <v-card-actions>
+                
                 <v-spacer></v-spacer>
                 
                 <v-spacer></v-spacer>
@@ -172,12 +172,13 @@
     dialog: false,
     dialogDelete: false,
     headers: [
-      {text: 'ลำดับ',align: 'start',sortable: false,value: 'id_queue'},
+      { text: 'ลำดับ',align: 'start',sortable: false,value: 'id_queue'},
       { text: 'เวลาที่สั่ง', value: 'timebill' },
       { text: 'วันที่ที่สั่ง', value: 'datebill' },
       { text: 'สถานะ', value: 'id_bill' },
       { text: 'Actions', value: 'actions', sortable: false },
-    { text: 'Detail', value: 'ac', sortable: false },
+      { text: 'Detail', value: 'ac', sortable: false },
+
     ],
     desserts: [],
     desserts1: [],

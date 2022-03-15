@@ -8,6 +8,7 @@ import Queue from '../components/Queue.vue'
 import RawMaterial from '../components/RawMaterial.vue'
 import Noodle from '../components/Noodle.vue'
 import test from '../components/test.vue'
+import tables from '../components/tables.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,12 @@ const routes = [
     name: 'test',
     component: test
   },
+  {
+    path: '/tables',
+    name: 'tables',
+    component: tables
+  },
+
 
 
   
