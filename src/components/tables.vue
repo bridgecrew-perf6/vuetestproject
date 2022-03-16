@@ -1,120 +1,29 @@
 <template>
-  <div>
-    <v-container fluid ma-0>
-        <v-row no-gutters>
-        <v-col cols="9" justify="left">
-          <v-container>
-            <v-layout row wrap>
-              <v-col v-for="menu in menu" :key="menu.id">
-                <v-card height="100%" width="250" class="text-center" color="#80CBC4">
-                  <v-card-text class="text-h6" 
-                    >{{ menu.id_product}}<br />{{ menu.price_product }} ฿ <br />
-
-                    <v-btn
-                      color="primary"
-                      @click="addItem(menu)"
-                      class="mt-2"
-                      >Add</v-btn
-                    >
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-layout>
-          </v-container>
-        </v-col>
-<!-- //////////////////////////////////////////////////// -->
- <v-dialog v-if="item" v-model="dialogAdd" max-width="500px">
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">เพิ่มรายการ</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-row>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="item.id_product"
-                          label="เมนู"
-                          readonly
-                        ></v-text-field>
-                      </v-col>
-                     
-                    </v-row> 
-                    <v-row>
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="item.quantity"
-                        label="จำนวนชาม"
-                        type="number"
-                        min="1"
-                        start ="1"
-                        :rules="quantityRules"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="item.price_product"
-                        label="ราคา (฿)"
-                        type="number"
-                        readonly
-                      ></v-text-field>
-                    </v-col>
-                    </v-row>
-                  </v-form>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer> 
-              <v-btn
-                  class="ma-2"
-                  color="primary"
-                  dark
-                  @click="addToCart(item)"
-                >
-                  บันทึก
-                  <v-icon
-                    dark
-                    right
-                  >
-                    mdi-checkbox-marked-circle
-                  </v-icon>
-                </v-btn>
-              <v-btn class="ma-2"
-                  color="red"
-                  dark  
-                  @click="clearcl"
-                  >
-                ยกเลิก
-                <v-icon
-                    dark
-                    right
-                  >
-                    mdi-cancel
-                  </v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-col cols="3">
-          <v-container fluid ma-0>
-           <div id="app">
+  <div id="app">
   <v-app id="inspire">
+     
     <v-data-table
       :headers="headers"
       :items="desserts"
-      sort-by=""
+      :search="search"
+      
       class="elevation-1"
     >
-      <template v-slot:top>
+      <template v-slot:top> 
+        <v-card-title>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="ค้นหาเมนู"
+          single-line
+          hide-details
+        ></v-text-field>
+        </v-card-title>
         <v-toolbar
           flat
         >
-          <v-toolbar-title>Order</v-toolbar-title>
+          <v-toolbar-title class="text-h5">Menu</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -125,7 +34,7 @@
             v-model="dialog"
             max-width="500px"
           >
-            <!-- <template v-slot:activator="{ on,attrs }">
+            <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
                 dark
@@ -133,14 +42,13 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                New Item
+                เพิ่มเมนู
               </v-btn>
             </template>
             <v-card>
               <v-card-title>
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
-  
               <v-card-text>
                 <v-container>
                   <v-row>
@@ -150,8 +58,8 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.name"
-                        label="Dessert name"
+                        v-model="menu.name_product"
+                        label="ชื่อเมนู"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -160,239 +68,271 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.calories"
-                        label="Calories"
+                        v-model="menu.price_product"
+                        label="ราคา(บาท)"
+                        required
+                        type="number"
+                        min=1
                       ></v-text-field>
                     </v-col>
-                    <v-col
-                      cols="12"
+                     <v-container>
+                    <v-col cols="12"
                       sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.fat"
-                        label="Fat (g)"
-                      ></v-text-field>
+                      md="4">
+                          <v-row v-for="desserts2 in desserts2" :key="desserts2">
+                            <v-checkbox
+                              v-model="desserts2.id_ingre"
+                              item-text="name_ingre"
+                              attach
+                              
+                              item-value="id_ingre"
+                              hide-details
+                              class="shrink mr-2 mt-0"
+                              return-object
+                            ></v-checkbox>{{desserts2.name_ingre}}
+                            <v-text-field
+                              label= 'กรัม'
+                              item-value="id_ingre"
+                              v-model="quantity"
+                            ></v-text-field>
+                          </v-row>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.carbs"
-                        label="Carbs (g)"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.protein"
-                        label="Protein (g)"
-                      ></v-text-field>
-                    </v-col>
+                     </v-container>
                   </v-row>
                 </v-container>
-              </v-card-text> -->
+              </v-card-text>
   
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                  color="blue darken-1"
-                  text
+                  class="ma-2"
+                  color="primary"
+                  dark
+                  @click="sendData"
+                >
+                  บันทึก
+                  <v-icon
+                    dark
+                    right
+                  >
+                    mdi-checkbox-marked-circle
+                  </v-icon>
+                </v-btn>
+
+                 <v-btn
+                  class="ma-2"
+                  color="red"
+                  dark
                   @click="close"
                 >
-                  Cancel
+                  ยกเลิก
+                  <v-icon
+                    dark
+                    right
+                  >
+                    mdi-cancel
+                  </v-icon>
                 </v-btn>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="save"
-                >
-                  Save
-                </v-btn>
+              
               </v-card-actions>
-            <!-- </v-card> -->
+            </v-card>
+            
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="text-h5" center>รายละเอียด</v-card-title>
+              <v-card-title class="text-h5 mb-6 text-center" >ต้องการลบหรือไม่</v-card-title>
               <v-card-actions>
-                
                 <v-spacer></v-spacer>
-                
+                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
-
-
-       <!-- Show Status -->
-      <template v-slot:[`item.id_bill`]="{ item }">
-        <v-chip
-         :color="getColor(item.id_bill)"
-         dark
-        >      
-        <v-icon>watch_later</v-icon>      
-       </v-chip>
-      </template>
-
-
-      
-      <!-- Edit & Delete -->
       <template v-slot:[`item.actions`]="{ item }">
-       <v-chip
-         :color="getColor2(item.actions)"
-         dark
-        >      
-        <v-icon @click="reloadPage(),deletetable(item.id_queue)">delete</v-icon>      
-       </v-chip>
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        > 
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          v-on:click="reloadPage(),deletetable(item.id_product)"
+        >
+          mdi-delete
+        </v-icon>
       </template>
-
-
-      <template v-slot:[`item.ac`]="{ item }">
-       <v-chip
-         :color="getColor3(item.ac)"
-         dark
-        >      
-        <v-icon @click="addItem(menu)">receipt_long</v-icon>      
-       </v-chip>
+      <template v-slot:no-data>
+        <!-- <v-btn
+          color="primary"
+          @click="initialize"
+        >
+          Reset
+        </v-btn> -->
       </template>
     </v-data-table>
   </v-app>
 </div>
-          </v-container>
-        </v-col>
-<!-- //////////////////////////////////////////////////// -->
-
-      </v-row>
-    </v-container>
-  </div>
 </template>
 
 <script>
-import axios from "axios";
-export default {
-  name: "menupage",
-  data() {
-    return {
-      valid: true,
-      quantityRules: [(v) => v >= 1 || "ขั้นต่ำ 1 ชาม"],
-      item: [],
-      dialog: false,
-      dialogAdd: false,
-      dialogDelete: false,
-     headers: [
-      { text: 'ลำดับ',align: 'start',sortable: false,value: 'id_queue'},
-      { text: 'เวลาที่สั่ง', value: 'timebill' },
-      { text: 'วันที่ที่สั่ง', value: 'datebill' },
-      { text: 'สถานะ', value: 'id_bill' },
+import axios from 'axios';
+  export default {
+    name: 'Addmenu',
+data() {
+  return {
+    search: '',
+    dialog: false,
+    dialogDelete: false,
+    enabled: false,
+    menu:{ 
+     name_product:"",
+     price_product :"",
+     quantity :""
+    },
+    headers: [
+      {
+        text: 'ชื่อเมนู',
+        align: 'start',
+        sortable: false,
+        value: 'name_product',
+      },
+      // { text: 'เนื้อหมู(กรัม)', value: 'pig' },
+      // { text: 'เนื้อวัว(กรัม)', value: 'cow' },
+      // { text: 'เนื้อไก่(กรัม)', value: 'chicken' },
+      // { text: 'ตับ(กรัม)', value: 'liver' },
+      // { text: 'กุ้ง(ตัว)', value: 'shrimp' },
+      // { text: 'ปลาหมึก(กรัม)', value: 'squid' },
+      // { text: 'ลูกชิ้น(ลูก)', value: 'meatball' },
+      // { text: 'เส้น(กรัม)', value: 'noodle' },
+      { text: 'ราคา(บาท)', value: 'price_product'},
       { text: 'Actions', value: 'actions', sortable: false },
-      { text: 'Detail', value: 'ac', sortable: false },
-
     ],
-      menuadd:[],
-      noodle:[],
-      menu: [],
-      desserts:[],
-      editedIndex: -1,
-      editedItem: {
-      id_product: "",
-      price_product: "",
-      },
-      defaultItem: {
-        name_ingre:"",
-        name_noo:"",
-        quantity:"1"
-     
-      },
-      ingredient: [],
-      ingredients: [],
-      menulist: [],
-    };
-  },
+    desserts: [],
+    desserts2: [],
+    editedIndex: -1,
+    // menu: {
+    //   name12: '',
+    //   pig: '',
+    //   cow: '',
+    //   chicken: '',
+    //   liver : '',
+    //   shrimp: '',
+    //   squid: '',
+    //   meatball: '',
+    //   noodle: '',
+    //   price : ''
+    // },
+    defaultItem: {
+      name_product: 'ก๋วยเตี๋ยว',
+      price_product: ''
+    },
+}},
 
   computed: {
-     listTable() {
-      return [];
+    formTitle () {
+      return this.editedIndex === -1 ? 'เพิ่มเมนู ' : 'แก้ไขเมนู'
     },
-    
-   
   },
 
   watch: {
-    dialog(val) {
-      val || this.close();
+    dialog (val) {
+      val || this.close()
     },
-    dialogDelete(val) {
-      val || this.closeDelete();
+    dialogDelete (val) {
+      val || this.closeDelete()
     },
   },
 
-  created() {
-    this.gettable();
-    this.consultaritems();
-   
-   
+  created () {
+    // this.initialize()
+    this.consultaritems()
+    this.consultaritems2()
+    this.deletetable();
   },
-
-  methods: {
  
 
-    submitData() {
-      {
-        if(this.total() != '0' ){
-        console.log(this.menuadd);
-        axios.post("http://localhost/menunoodle/menuapi14.php", {
-          totalbill:this.total(),
-          // id_product:this.item.id_product,
-          menuadd:this.menuadd,
-          // menuadd:this.menuadd()
-        }).then(res => {console.log(res)}).catch(err => {console.log(err)});
-      }this.cancelmenuadd() 
-    
-    }}, addToCart(item) {
-      if(this.item.quantity  != ''){
-        this.menuadd.push({
-        id_product:item.id_product,
-        // id_product:item.id_product,
-        name_noo:item.name_noo,
-        name_ingre:item.name_ingre,
-        quantity:item.quantity,
-        price_product:item.price_product,
-        total:item.quantity * item.price_product,
-        }),
-      this.clear()}console.log(item)},
-    
-    
-    
-    // submitData2(){
-    //   console.log(this.item.id_product)
-    //   axios.post("http://localhost/menunoodle/menuapi15.php",{
-    //     id_product:this.item.id_product,
-    //     // name_noo: this.noodle.name_noo,
-    //     // name_ingre: this.ingredients.name_ingre,
-    //     // quantity: this.item.quantity,
-    //     // price_product:this.item.price_product
-
-    //   })
-
-      
-
+  methods: {
+    // initialize () {
+    //   this.desserts = [
+    //     {
+    //       name12: 'TestMenu น้ำใส',
+    //       pig: 200,
+    //       cow: "-",
+    //       chicken: 100,
+    //       liver : 200,
+    //       shrimp: 2,
+    //       squid: 100,
+    //       meatball: 4,
+    //       noodle: 200,
+    //       price : 70,
+    //     }, 
+    //   ]
     // },
 
-    gettable() {
-      axios.get("http://localhost/menunoodle/queueOrDetail.php").then((res) => {
-        this.menu = res.data;
-      });
+    editItem (item) {
+      this.editedIndex = this.desserts.indexOf(item)
+      this.menu = Object.assign({}, item)
+      this.dialog = true
     },
+    checkbox(){
+      this.desserts2.id_ingre
+      this.enabled = true
+    },
+
+    deleteItem (item) {
+      this.editedIndex = this.desserts.indexOf(item)
+      this.menu = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+
+    deleteItemConfirm () {
+      this.desserts.splice(this.editedIndex, 1)
+      this.closeDelete()
+    },
+
+    close () {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.menu = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+
+    closeDelete () {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.menu = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+    save () {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.menu)
+      } else {
+        this.desserts.push(this.menu)
+      }
+      this.close()
+    },
+    sendData(e){
+        e.preventDefault();
+        console.log("ส่งข้อมูลแล้ว")
+        if(this.menu.name_product  != '' && this.menu.price_product ){
+        axios.post("http://localhost/menunoodle/menuapi.php", {
+        name_product:this.menu.name_product,
+        price_product:this.menu.price_product,
+        // id_ingre:this.desserts2.id_ingre,
+        // quantity:this.menu.quantity
+        
+        })
+        this.save();this.dialog=false;this.reloadPage()
+    }},
     consultaritems(){
-            fetch('http://localhost/menunoodle/queueOr.php')
+            fetch('http://localhost/menunoodle/menuapi2.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
@@ -402,134 +342,31 @@ export default {
                     this.desserts=datosRespuesta;
                 }
             }).catch(console.log)
-    },
-    //  consultaritems(){
-    //         fetch('http://localhost/menunoodle/queueOrDetail.php')
-    //         .then(respuesta=>respuesta.json())
-    //         .then((datosRespuesta)=>{
-    //             console.log(datosRespuesta)
-    //             if(typeof datosRespuesta[0].success==='undefined'){
-    //                 this.ingredients=datosRespuesta;
-    //             }
-    //         }).catch(console.log)},
-            //  consultaritems2(){
-            // fetch('http://localhost/menunoodle/menuapi10.php')
-            // .then(respuesta=>respuesta.json())
-            // .then((datosRespuesta)=>{
-            //     console.log(datosRespuesta)
-            //     // this.menulist=[]
-            //     // this.menulist.calories=Response
-            //     if(typeof datosRespuesta[0].success==='undefined'){
-            //         this.noodle=datosRespuesta;
-            //     }
-            // }).catch(console.log)},
-
-    editItem(item) {
-      this.editedIndex = this.menu.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.menuadd.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.menuadd.splice(this.editedIndex, 1);
-      this.closeDelete();
-      this.dialogDelete = false;
-    },
-
-    close() {
-      this.dialogAdd = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.menu[this.editedIndex], this.editedItem);
-      } else {
-        this.menu.push(this.editedItem);
-      }
-      this.close();
-    },
-     addItem(item) {
-      this.item = item;
-      this.dialogAdd = true;
-      console.log(item);
-    },
-   
-      
-      clear () {
-      this.item.quantity = ''
-      this.item.name_noo = ''
-      this.item.name_ingre = null
-      this.dialogAdd = !this.dialogAdd;
-    },
-    clearcl () {
-      this.item.quantity = ''
-      this.item.name_noo = ''
-      this.item.name_ingre = null
-      this.dialogAdd = !this.dialogAdd;
-      
-    },total(){
-      var sum=0;
-      this.menuadd.forEach(function(item){
-        sum+=item.total
-      })
-      return sum
-      
-    },cancelmenuadd() {
-    this.menuadd = [];
-    },checkid(id_product){
-      console.log(id_product)
-    },
-    getColor (id_bill) {
-            if (id_bill == 1) return '#4CAF50'
-            else return '#FF9800' 
-       
-    },
-    getColor2(actions,){
-            if(actions==actions) return 'red'
-    },
-    getColor3(ac){
-            if(ac==ac) return '#1E88E5'
-     },
-    
-     
-
-      
-    // consultaritems(){
-    //         fetch('http://localhost/menunoodle/menuapi2.php')
-    //         .then(respuesta=>respuesta.json())
-    //         .then((datosRespuesta)=>{
-    //             console.log(datosRespuesta)
-    //             this.menulist=[]
-    //             // this.menulist.calories=Response
-    //             if(typeof datosRespuesta[0].success==='undefined'){
-    //                 this.desserts=datosRespuesta;
-    //             }
-    //         }).catch(console.log)}
-  },
-};
-</script>
-
-<style>
-.a {
-  font-size: 5rem;
-
+        },
+         deletetable(id_product){
+         console.log(id_product);
+         fetch('http://localhost/menunoodle/menuapi2.php/?deletetablee='+id_product)
+            .then(respuesta=>respuesta.json())
+            .then((desserts)=>{
+              console.log(desserts)
+              
+            }).catch(console.log)
+          },
+          consultaritems2(){
+            fetch('http://localhost/menunoodle/menuapi8.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts2=datosRespuesta;
+                }
+            }).catch(console.log)
+        },
+          reloadPage() {
+          window.location.reload();
+          },
+  }
 }
-</style>
+</script>

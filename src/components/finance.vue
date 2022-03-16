@@ -123,6 +123,7 @@
     data: () => ({
     dialog: false,
     dialogDelete: false,
+    search: '',
     headers: [
       {
         text: 'ลำดับ',
@@ -144,12 +145,7 @@
 
   
 
-  watch: {
-    dialog (val) {
-      val || this.close()
-    },
-    
-  },
+ 
 
   created () {
     this.consultaritems()

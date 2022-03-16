@@ -9,7 +9,6 @@
                 <v-card height="100%" width="250" class="text-center" color="#80CBC4">
                   <v-card-text class="text-h6" 
                     >{{ menu.name_product}}<br />{{ menu.price_product }} ฿ <br />
-
                     <v-btn
                       color="primary"
                       @click="addItem(menu)"
@@ -43,7 +42,7 @@
                       </v-col>
                       <v-col cols="6">
                         <v-select
-                       v-model="item.name_noo"
+                        v-model="item.name_noo"
                         :items="noodle"
                         attach
                         item-text="name_noo"

@@ -95,7 +95,7 @@
                 </v-container>
               </v-card-text> -->
   
-              <v-card-actions>
+              <!-- <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
                   color="blue darken-1"
@@ -111,7 +111,7 @@
                 >
                   Save
                 </v-btn>
-              </v-card-actions>
+              </v-card-actions> -->
             <!-- </v-card> -->
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
@@ -273,8 +273,3 @@
   },
 }
 </script>
-<style scoped>
-.aa {
-        background-image: url(https://bottomlineis.co/uploads/images/image_750x_5d691a8d5f2f9.jpg);
-    }
-</style>

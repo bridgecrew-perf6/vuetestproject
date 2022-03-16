@@ -310,7 +310,7 @@ data() {
                 }
             }).catch(console.log)
         },
-         deletetable(id_product,){
+         deletetable(id_product){
          console.log(id_product);
          fetch('http://localhost/menunoodle/menuapi2.php/?deletetablee='+id_product)
             .then(respuesta=>respuesta.json())

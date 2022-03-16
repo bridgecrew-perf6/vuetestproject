@@ -238,7 +238,7 @@
         </v-icon>
         <v-icon
           small
-          @click="reloadPage(),deletetable(item.id)"
+          @click="reloadPage(),deletetable(item.id_ingre)"
         >
           mdi-delete
         </v-icon>
@@ -439,9 +439,9 @@ data() {
 },    reloadPage() {
           window.location.reload();
           },
-      deletetable(id,){
-         console.log(id);
-         fetch('http://localhost/menunoodle/menuapi4.php/?deletetablee='+id)
+      deletetable(id_ingre){
+         console.log(id_ingre);
+         fetch('http://localhost/menunoodle/menuapi4.php/?deletetablee='+id_ingre)
             .then(respuesta=>respuesta.json())
             .then((desserts)=>{
               console.log(desserts)
