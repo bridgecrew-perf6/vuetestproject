@@ -41,8 +41,9 @@
                       <div class="mb-4">
                         <v-icon color="white" size="50" >monetization_on</v-icon>
                       </div>
-                      <v-list-item-title class="headline mb-1 white--text">
-                        9,450฿
+                      <v-list-item-title class="headline mb-1 white--text"  v-for="desserts3 in desserts3" :key="desserts3">
+                        {{desserts3.ts}} ฿
+                        
                       </v-list-item-title>
                       <v-list-item-subtitle class="white--text">รายได้ต่อสัปดาห์</v-list-item-subtitle>
                     </v-list-item-content>
@@ -62,8 +63,9 @@
                       <div class="mb-4">
                         <v-icon color="white" size="50" >monetization_on</v-icon>
                       </div>
-                      <v-list-item-title class="headline mb-1 white--text">
-                        10,550฿
+                      <v-list-item-title class="headline mb-1 white--text"  v-for="desserts4 in desserts4" :key="desserts4">
+                        {{desserts4.ts}} ฿
+                        
                       </v-list-item-title>
                       <v-list-item-subtitle class="white--text">รายได้ต่อเดือน</v-list-item-subtitle>
                     </v-list-item-content>
@@ -135,6 +137,8 @@
     ],
     desserts: [],
     desserts2: [],
+    desserts3: [],
+    desserts4: [],
    
   }),
 
@@ -150,6 +154,8 @@
   created () {
     this.consultaritems()
     this.consultaritems2()
+    this.consultaritems3()
+    this.consultaritems4()
   },
 
   methods: {
@@ -174,6 +180,30 @@
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
                     this.desserts2=datosRespuesta;
+                }
+            }).catch(console.log)
+        },
+        consultaritems3(){
+            fetch('http://localhost/menunoodle/finanapi3.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts3=datosRespuesta;
+                }
+            }).catch(console.log)
+        },
+        consultaritems4(){
+            fetch('http://localhost/menunoodle/finanapi4.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist=[]
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.desserts4=datosRespuesta;
                 }
             }).catch(console.log)
         },
