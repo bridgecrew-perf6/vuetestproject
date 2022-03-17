@@ -1,116 +1,109 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import menupage from '../components/menupage.vue'
-import Addmenu from '../components/Addmenu.vue'
-import finance from '../components/finance.vue'
-import dashboard from '../components/dashboard.vue'
-import Queue from '../components/Queue.vue'
-import RawMaterial from '../components/RawMaterial.vue'
-import Noodle from '../components/Noodle.vue'
-import test from '../components/test.vue'
-import tables from '../components/tables.vue'
-import Login from '../components/Login.vue'
-import Register from '../components/Register.vue'
-import firebase from 'firebase/compat/app'
-import App1 from '../App1.vue'
-import navbar from '../components/navbar.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import menupage from "../components/menupage.vue";
+import Addmenu from "../components/Addmenu.vue";
+import finance from "../components/finance.vue";
+import dashboard from "../components/dashboard.vue";
+import Queue from "../components/Queue.vue";
+import RawMaterial from "../components/RawMaterial.vue";
+import Noodle from "../components/Noodle.vue";
+import test from "../components/test.vue";
+import tables from "../components/tables.vue";
+import Login from "../components/Login.vue";
+import Register from "../components/Register.vue";
+import firebase from "firebase/compat/app";
+import App1 from "../App1.vue";
+import navbar from "../components/navbar.vue";
 
-
-
-
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'menupage',
-    component: menupage
+    path: "/menupage",
+    name: "menupage",
+    component: menupage,
   },
   {
-    path: '/Addmenu',
-    name: 'Addmenu',
-    component: Addmenu
+    path: "/",
+    name: "Login",
+    component: Login,
   },
   {
-    path: '/finance',
-    name: 'finance',
-    component: finance
+    path: "/Addmenu",
+    name: "Addmenu",
+    component: Addmenu,
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: dashboard
+    path: "/finance",
+    name: "finance",
+    component: finance,
   },
   {
-    path: '/Queue',
-    name: 'Queue',
-    component: Queue
+    path: "/dashboard",
+    name: "dashboard",
+    component: dashboard,
   },
   {
-    path: '/RawMaterial',
-    name: 'RawMaterial',
-    component: RawMaterial
+    path: "/Queue",
+    name: "Queue",
+    component: Queue,
   },
   {
-    path: '/Noodle',
-    name: 'Noodle',
-    component: Noodle
-  },  
-  {
-    path: '/test',
-    name: 'test',
-    component: test
+    path: "/RawMaterial",
+    name: "RawMaterial",
+    component: RawMaterial,
   },
   {
-    path: '/tables',
-    name: 'tables',
-    component: tables
+    path: "/Noodle",
+    name: "Noodle",
+    component: Noodle,
   },
   {
-    path: '/Register',
-    name: 'Register',
-    component: Register
-  },
- {
-    path: '/Login',
-    name: 'Login',
-    component: Login
+    path: "/test",
+    name: "test",
+    component: test,
   },
   {
-    path: '/App1',
-    name: 'App1',
-    component: App1
+    path: "/tables",
+    name: "tables",
+    component: tables,
   },
   {
-    path: '/navbar',
-    name: 'navbar',
-    component: navbar
+    path: "/Register",
+    name: "Register",
+    component: Register,
   },
-
-
-
-
-
-  
-  
-  
-]
+  // {
+  //   path: "/Login",
+  //   name: "Login",
+  //   component: Login,
+  // },
+  {
+    path: "/App1",
+    name: "App1",
+    component: App1,
+  },
+  {
+    path: "/navbar",
+    name: "navbar",
+    component: navbar,
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
-
+  routes,
+});
 
 router.beforeEach((to, form, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const isAuthenticated = firebase.auth().currentUser;
   if (requiresAuth && !isAuthenticated) {
-    next("/login");
+    next("/Login");
   } else {
     next();
-    }
-})
-  
-export default router
+  }
+});
+
+export default router;

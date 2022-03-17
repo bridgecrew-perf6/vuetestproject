@@ -16,8 +16,8 @@
                       <div class="mb-4">
                           <v-icon color="white" size="50" >monetization_on</v-icon>
                       </div>
-                      <v-list-item-title class="headline mb-1 white--text"  v-for="desserts2 in desserts2" :key="desserts2">
-                        {{desserts2.ts}} ฿
+                      <v-list-item-title class="headline mb-1 white--text"  v-for="totalDay in totalDay" :key="totalDay">
+                        {{totalDay.ts}} ฿
                       </v-list-item-title>
                       <v-list-item-subtitle class="white--text">รายได้ต่อวัน</v-list-item-subtitle>
                     </v-list-item-content>
@@ -41,8 +41,8 @@
                       <div class="mb-4">
                         <v-icon color="white" size="50" >monetization_on</v-icon>
                       </div>
-                      <v-list-item-title class="headline mb-1 white--text"  v-for="desserts3 in desserts3" :key="desserts3">
-                        {{desserts3.ts}} ฿
+                      <v-list-item-title class="headline mb-1 white--text"  v-for="totalWeek in totalWeek" :key="totalWeek">
+                        {{totalWeek.ts}} ฿
                         
                       </v-list-item-title>
                       <v-list-item-subtitle class="white--text">รายได้ต่อสัปดาห์</v-list-item-subtitle>
@@ -63,8 +63,8 @@
                       <div class="mb-4">
                         <v-icon color="white" size="50" >monetization_on</v-icon>
                       </div>
-                      <v-list-item-title class="headline mb-1 white--text"  v-for="desserts4 in desserts4" :key="desserts4">
-                        {{desserts4.ts}} ฿
+                      <v-list-item-title class="headline mb-1 white--text"  v-for="totalMonth in totalMonth" :key="totalMonth">
+                        {{totalMonth.ts}} ฿
                         
                       </v-list-item-title>
                       <v-list-item-subtitle class="white--text">รายได้ต่อเดือน</v-list-item-subtitle>
@@ -99,7 +99,7 @@
           </v-card-title>
           <v-data-table
             :headers="headers"
-            :items="desserts"
+            :items="listdata"
             :search="search"
           ><template v-slot:[`item.timebill`]="{ item }">
         <v-chip
@@ -125,97 +125,82 @@
     dialogDelete: false,
     search: '',
     headers: [
-      {
-        text: 'ลำดับ',
-        align: 'start',
-        sortable: false,
-        value: 'id_bill',
-      },
+
+      {text: 'ลำดับ',align: 'start',sortable: false,value: 'id_bill',},
       { text: 'จำนวน(บาท)', value: 'totalbill' },
       { text: 'วันที่', value: 'datebill' },
       { text: 'สถานะ', value: 'timebill' },
       
     ],
-    desserts: [],
-    desserts2: [],
-    desserts3: [],
-    desserts4: [],
+    listdata: [],
+    totalDay: [],
+    totalWeek: [],
+    totalMonth: [],
    
   }),
 
-  
-
- 
-
   created () {
-    this.consultaritems()
-    this.consultaritems2()
-    this.consultaritems3()
-    this.consultaritems4()
+    this.getDataList()
+    this.getDataTotalDay()
+    this.getDataTotalWeek()
+    this.getDataTotalMonth()
   },
 
   methods: {
-    consultaritems(){
-            fetch('http://localhost/menunoodle/finanapi.php')
+    getDataList(){
+            fetch('http://localhost/menunoodle/fatchFinan.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
                 // this.menulist=[]
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts=datosRespuesta;
+                    this.listdata=datosRespuesta;
                 }
             }).catch(console.log)
         },
-        consultaritems2(){
-            fetch('http://localhost/menunoodle/finanapi2.php')
+        getDataTotalDay(){
+            fetch('http://localhost/menunoodle/fatchFinanTotalDay.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
                 // this.menulist=[]
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts2=datosRespuesta;
+                    this.totalDay=datosRespuesta;
                 }
             }).catch(console.log)
         },
-        consultaritems3(){
-            fetch('http://localhost/menunoodle/finanapi3.php')
+        getDataTotalWeek(){
+            fetch('http://localhost/menunoodle/fatchFinanTotalWeek.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
                 // this.menulist=[]
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts3=datosRespuesta;
+                    this.totalWeek=datosRespuesta;
                 }
             }).catch(console.log)
         },
-        consultaritems4(){
-            fetch('http://localhost/menunoodle/finanapi4.php')
+        getDataTotalMonth(){
+            fetch('http://localhost/menunoodle/fatchFinanTotalMonth.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
                 // this.menulist=[]
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts4=datosRespuesta;
+                    this.totalMonth=datosRespuesta;
                 }
             }).catch(console.log)
         },
          
 
-      // Color of Status
    
       getColor2(timebill){
          if(timebill==timebill) return 'green'
-     },
-    
-
-
-
-     
-
+        },
   },
 }
 

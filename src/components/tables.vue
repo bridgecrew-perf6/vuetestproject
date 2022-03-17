@@ -84,7 +84,6 @@
                               v-model="desserts2.id_ingre"
                               item-text="name_ingre"
                               attach
-                              
                               item-value="id_ingre"
                               hide-details
                               class="shrink mr-2 mt-0"

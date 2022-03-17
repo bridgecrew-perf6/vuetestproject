@@ -9,7 +9,7 @@
         </v-subheader>
        <v-container fluid ma-0 >
             <v-row wrap >
-              <v-col cols="4"   v-for="(item,desserts)  in desserts" :key="desserts.id">
+              <v-col cols="4"   v-for="(item,ingredients)  in ingredients" :key="ingredients.id">
                 <v-card elevation="2" class="rounded-lg" height="100%" width="500" >
                             <v-card-text class="d-flex justify-space-between align-center" >
                                 <div>
@@ -26,22 +26,6 @@
               </v-col>
             </v-row>
           </v-container>
-            <!-- <v-col>
-                <v-card>
-                    <v-data-table
-                            caption="Recent Order list"
-                            :headers="headers"
-                            :items="desserts"
-                            :items-per-page="15"
-                            class="elevation-1"
-                    >
-                        <template v-slot:[`item.action`]="">
-                            <v-btn color="success" outlined small shaped >View</v-btn>
-                        </template>
-                    </v-data-table>
-                </v-card>
-            </v-col> -->
-        
     </div>
 </template>
 
@@ -50,49 +34,32 @@
         name: "Dashboard",
         data() {
             return {
-                desserts: [
-                    {title: 'หมู' , amount: '220' , icon: 'mdi-account', color: 'cyan lighten-3'},
-                    {title: 'เนื้อไก่', amount: 203, icon: 'mdi-account-group-outline', color: 'green darken-2'},
-                    {title: 'เนื้อวัว', amount: 120, icon: 'mdi-account-group-outline', color: 'blue-grey darken-1'},
-                    {
-                        title: 'ตับ',
-                        amount: 3433,
-                        icon: 'mdi-account-group-outline',
-                        color: 'deep-orange darken-1'
-                    },
-                    {title: 'ปลาหมึก', amount: 150, icon: 'mdi-account', color: 'cyan lighten-3'},
-                    {title: 'กุ้ง', amount: 100, icon: 'mdi-account-group-outline', color: 'green darken-2'},
-                    {title: 'ลูกชิ้น', amount: 5465, icon: 'mdi-account-group-outline', color: 'blue-grey darken-1'},
-                    {
-                        title: 'เส้น',
-                        amount: 8800,
-                        icon: 'mdi-account-group-outline',
-                        color: 'deep-orange darken-1'
-                    },
-                ],
-               
+                ingredients: [],
             }
-        },created () {
-    // this.initialize()
-    this.consultaritems()
-  },
-        methods: {
-            onButtonClick(item) {
-                console.log('click on ' + item.no)
+        },
+        
+        
+        created () {
+            this.getShowDataIngredients()
+    },
+    methods: {
+        onButtonClick(item) {
+            console.log('click on ' + item.no)
             },
-             consultaritems(){
-            fetch('http://localhost/menunoodle/menuapi4.php')
+
+        getShowDataIngredients(){
+            fetch('http://localhost/menunoodle/fetchIngredients.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts=datosRespuesta;
+                    this.ingredients=datosRespuesta;
                 }
             }).catch(console.log)
-},
-        }
+        },
     }
+}
 </script>
 
 <style scoped>

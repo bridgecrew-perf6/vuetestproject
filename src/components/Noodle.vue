@@ -3,7 +3,7 @@
   <v-app id="inspire">
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="DataNoodle"
       sort-by="calories"
       class="elevation-1"
     >
@@ -63,31 +63,6 @@
                         type="number"
                       ></v-text-field>
                     </v-col>
-                    <!-- <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.date"
-                        label="Fat (g)"
-                        
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.data"
-                        label="Carbs (g)"
-                        
-                      ></v-text-field>
-                    </v-col> -->
-
-                    
-                    <!-- ส่วนของเวลา -->
                     <v-col
                       cols="12"
                       sm="6"
@@ -207,7 +182,7 @@
                 <v-btn
                   color="blue darken-1"
                   text
-                  @click="sendData()"
+                  @click=" sendDataNoodle()"
                 >
                   save
                 </v-btn>
@@ -238,7 +213,7 @@
         </v-icon>
         <v-icon
           small
-          @click="reloadPage(),deletetable(item.id_noo)"
+          @click="reloadPage(),deleteDataMenu(item.id_noo)"
         >
           mdi-delete
         </v-icon>
@@ -302,7 +277,7 @@ data() {
       { text: 'วันหมดอายุ', value: 'exp_noo' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    desserts: [],
+    DataNoodle: [],
     editedIndex: -1,
     editedItem: {
       name_noo: '',
@@ -339,55 +314,24 @@ data() {
 
   created () {
     // this.initialize()
-    this.consultaritems()
+    this.getDataNooldle()
   },
 
   methods: {
-    initialize () {
-      this.desserts = [
-        {
-            name_noo: 'เนื้อหมู',
-            quantity_noo: 0,
-            date_noo: 0,
-            exp_noo: 159,
-         
-        },
-        {
-            name_noo: 'เนืื้อวัว',
-            quantity_noo: 0,
-            date_noo: 0,
-            exp_noo: 159,
-        },
-        {
-            name_noo: 'ตับ',
-            quantity_noo: 0,
-            date_noo: 0,
-            exp_noo: 159,
-        },
-        {
-            name_noo: 'ลูกชิ้น',
-            quantity_noo: 0,
-            date_noo: 5,
-            exp_noo: 5,
-        },
-      ]
-    },
-   
-
     editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.DataNoodle.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.DataNoodle.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
+      this.DataNoodle.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
@@ -409,42 +353,43 @@ data() {
 
     save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        Object.assign(this.DataNoodle[this.editedIndex], this.editedItem)
       } else {
-        this.desserts.push(this.editedItem)
+        this.DataNoodle.push(this.editedItem)
       }
       this.close()
     },
-     sendData(){
+     sendDataNoodle(){
         console.log("ส่งข้อมูลแล้ว")
-        // if(this.rawmaterial.name_noo  != '' && this.rawmaterial.quantity_noo!= '' && this.rawmaterial.date_noo != '' && this.rawmaterial.exp_noo ){
-        axios.post("http://localhost/menunoodle/menuapi5.php", {
+        if(this.editedItem.name_noo  != '' && this.editedItem.quantity_noo!= '' 
+        && this.editedItem.date_noo != '' && this.editedItem.exp_noo ){
+        axios.post("http://localhost/menunoodle/sendDataNoodle.php", {
         name_noo:this.editedItem.name_noo,
         quantity_noo:this.editedItem.quantity_noo,
         date_noo:this.editedItem.date_noo,
         exp_noo:this.editedItem.exp_noo,
         })
-        this.save();this.reloadPage()
+        this.save();this.reloadPage()}
   },
-      consultaritems(){
-            fetch('http://localhost/menunoodle/menuapi6.php')
+      getDataNooldle(){
+            fetch('http://localhost/menunoodle/fetchNoodle.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts=datosRespuesta;
+                    this.DataNoodle=datosRespuesta;
                 }
             }).catch(console.log)
 },    reloadPage() {
           window.location.reload();
           },
-      deletetable(id_noo){
+       deleteDataNooldle(id_noo){
          console.log(id_noo);
-         fetch('http://localhost/menunoodle/menuapi6.php/?deletenoodle='+id_noo)
+         fetch('http://localhost/menunoodle/fetchNoodle.php/?deletenoodle='+id_noo)
             .then(respuesta=>respuesta.json())
-            .then((desserts)=>{
-              console.log(desserts)
+            .then((DataNoodle)=>{
+              console.log(DataNoodle)
               
             }).catch(console.log)
           },

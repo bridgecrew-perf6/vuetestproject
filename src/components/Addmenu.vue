@@ -4,7 +4,7 @@
      
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="DataProduct"
       :search="search"
       
       class="elevation-1"
@@ -58,7 +58,7 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="menu.name_product"
+                        v-model="product.name_product"
                         label="ชื่อเมนู"
                       ></v-text-field>
                     </v-col>
@@ -68,7 +68,7 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="menu.price_product"
+                        v-model="product.price_product"
                         label="ราคา(บาท)"
                         required
                         type="number"
@@ -139,7 +139,7 @@
         </v-icon>
         <v-icon
           small
-          v-on:click="reloadPage(),deletetable(item.id_product)"
+          v-on:click="reloadPage(),deleteDataMenu(item.id_product)"
         >
           mdi-delete
         </v-icon>
@@ -166,9 +166,9 @@ data() {
     search: '',
     dialog: false,
     dialogDelete: false,
-    menu:{ 
-     name_product:"",
-     price_product :"",
+    product:{ 
+        name_product:"",
+        price_product :"",
     },
     headers: [
       {
@@ -188,24 +188,9 @@ data() {
       { text: 'ราคา(บาท)', value: 'price_product'},
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    desserts: [],
-    editedIndex: -1,
-    // menu: {
-    //   name12: '',
-    //   pig: '',
-    //   cow: '',
-    //   chicken: '',
-    //   liver : '',
-    //   shrimp: '',
-    //   squid: '',
-    //   meatball: '',
-    //   noodle: '',
-    //   price : ''
-    // },
-    defaultItem: {
-      name_product: 'ก๋วยเตี๋ยว',
-      price_product: ''
-    },
+    DataProduct: [],
+  
+   
 }},
 
   computed: {
@@ -224,51 +209,33 @@ data() {
   },
 
   created () {
-    // this.initialize()
-    this.consultaritems()
+    this.getShowDataProduct();
     this.deletetable();
   },
  
 
   methods: {
-    // initialize () {
-    //   this.desserts = [
-    //     {
-    //       name12: 'TestMenu น้ำใส',
-    //       pig: 200,
-    //       cow: "-",
-    //       chicken: 100,
-    //       liver : 200,
-    //       shrimp: 2,
-    //       squid: 100,
-    //       meatball: 4,
-    //       noodle: 200,
-    //       price : 70,
-    //     }, 
-    //   ]
-    // },
-
     editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.menu = Object.assign({}, item)
+      this.editedIndex = this.DataProduct.indexOf(item)
+      this.product = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.menu = Object.assign({}, item)
+      this.editedIndex = this.DataProduct.indexOf(item)
+      this.product = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
+      this.DataProduct.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
     close () {
       this.dialog = false
       this.$nextTick(() => {
-        this.menu = Object.assign({}, this.defaultItem)
+        this.product = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
@@ -276,46 +243,46 @@ data() {
     closeDelete () {
       this.dialogDelete = false
       this.$nextTick(() => {
-        this.menu = Object.assign({}, this.defaultItem)
+        this.product = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
     save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.menu)
+        Object.assign(this.DataProduct[this.editedIndex], this.product)
       } else {
-        this.desserts.push(this.menu)
+        this.DataProduct.push(this.product)
       }
       this.close()
     },
-    sendData(e){
+    sendDataProduct(e){
         e.preventDefault();
         console.log("ส่งข้อมูลแล้ว")
-        if(this.menu.name_product  != '' && this.menu.price_product ){
-        axios.post("http://localhost/menunoodle/menuapi.php", {
-        name_product:this.menu.name_product,
-        price_product:this.menu.price_product,
+        if(this.product.name_product  != '' && this.product.price_product ){
+        axios.post("http://localhost/menunoodle/sendDataProduct.php", {
+        name_product:this.product.name_product,
+        price_product:this.product.price_product,
         })
         this.save();this.dialog=false;this.reloadPage()
     }},
-    consultaritems(){
-            fetch('http://localhost/menunoodle/menuapi2.php')
+   getShowDataProduct(){
+            fetch('http://localhost/menunoodle/fetchProduct.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)
                 // this.menulist=[]
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts=datosRespuesta;
+                    this.DataProduct=datosRespuesta;
                 }
             }).catch(console.log)
-        },
-         deletetable(id_product){
+      },
+    deleteDataMenu(id_product){
          console.log(id_product);
-         fetch('http://localhost/menunoodle/menuapi2.php/?deletetablee='+id_product)
+         fetch('http://localhost/menunoodle/fetchProduct.php/?deletetablee='+id_product)
             .then(respuesta=>respuesta.json())
-            .then((desserts)=>{
-              console.log(desserts)
+            .then((DataProduct)=>{
+              console.log(DataProduct)
               
             }).catch(console.log)
           },

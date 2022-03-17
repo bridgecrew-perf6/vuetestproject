@@ -1,275 +1,169 @@
-<template  >
-  <div id="app" >
-  <v-app id="inspire">
-    <v-data-table
-      :headers="headers"
-      :items="(desserts2)"
-      sort-by=""
-      class="elevation-1"
-    >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title>Order</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog
-            v-model="dialog"
-            max-width="500px"
-          >
-            <!-- <template v-slot:activator="{ on,attrs }">
-              <v-btn
-                color="primary"
-                dark
-                class="mb-2"
-                v-bind="attrs"
-                v-on="on"
-              >
-                New Item
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
-  
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="Dessert name"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.calories"
-                        label="Calories"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.fat"
-                        label="Fat (g)"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.carbs"
-                        label="Carbs (g)"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.protein"
-                        label="Protein (g)"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text> -->
-  
-              <!-- <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="close"
+<template>
+  <div id="app">
+    <v-app id="inspire">
+      <v-data-table
+        :headers="headers"
+        :items="desserts"
+        sort-by=""
+        class="elevation-1"
+        group-by="ลำดับ"
+       
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Order</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="500px"> </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="text-h5" center>รายละเอียด</v-card-title>
+                <!-- <v-card-actions> -->
+                  <v-card-actions
+                  v-for="(desserts3, index) in desserts3"
+                  :key="desserts3.id_bill"
                 >
-                  Cancel
-                </v-btn>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="save"
-                >
-                  Save
-                </v-btn>
-              </v-card-actions> -->
-            <!-- </v-card> -->
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5" center>รายละเอียด</v-card-title>
-              <v-card-actions v-for="desserts3 in desserts3" :key="desserts3.id_bill">
-                <v-col row>
-                <div >{{desserts3.name_product}}</div> 
-                </v-col>
-                <div >{{desserts3.quantity}}</div>
-                <v-col row>ชาม</v-col>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
+                  <v-col row>
+                    <!-- <v-col v-if="index == 0" row> -->
+                    <div>{{ index }}</div>
+                    <div>{{ desserts3.name_product }}</div>
+                  </v-col>
+                  <div>{{ desserts3.quantity }}</div>
+                  <!-- <div v-if="index == 0">{{ desserts3.quantity }}</div> -->
+                  <v-col row>ชาม</v-col>
+                  <!-- <v-col v-if="index == 0" row>ชาม</v-col> -->
+                  <v-spacer></v-spacer>
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
 
+        <!-- vEdit & Delete -->
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-chip :color="getColor2(item.actions)" dark>
+            <v-icon @click="reloadPage(), deletetable(item.id_bill)"
+              >delete</v-icon
+            >
+          </v-chip>
+        </template>
 
-       <!-- Show Status -->
-      <!-- <template v-slot:[`item.id_bill`]="{ item }">
-        <v-chip
-         :color="getColor(item.id_bill)"
-         dark
-        >      
-        <v-icon>watch_later</v-icon>      
-       </v-chip>
-      </template> -->
-
-
-      
-      <!-- Edit & Delete -->
-      <template v-slot:[`item.actions`]="{ item }">
-       <v-chip
-         :color="getColor2(item.actions)"
-         dark
-        >      
-        <v-icon @click="reloadPage(),deletetable(item.id_bill)">delete</v-icon>      
-       </v-chip>
-      </template>
-
-
-      <template v-slot:[`item.ac`]="{ item }">
-       <v-chip
-         :color="getColor3(item.ac)"
-         dark
-        >      
-        <v-icon @click="dialogDelete=true">receipt_long</v-icon>      
-       </v-chip>
-      </template>
-    </v-data-table>
-  </v-app>
-</div>
+        <!-- <template v-slot:[`item.ac`]="{ item }">
+          <v-chip :color="getColor3(item.ac)" dark>
+            <v-icon @click="getItemDetails(index)">receipt_long</v-icon>
+          </v-chip>
+        </template> -->
+          <!-- <v-icon @click="dialogDelete = true">receipt_long</v-icon> -->
+      </v-data-table>
+    </v-app>
+  </div>
 </template>
 
 <script>
 // import axios from 'axios';
-  export default {
-    data: () => ({
+export default {
+  data: () => ({
     dialog: false,
     dialogDelete: false,
     headers: [
-      { text: 'ลำดับ',align: 'start',sortable: false,value: 'id_bill'},
-      { text: 'เวลาที่สั่ง', value: 'timebill' },
-      { text: 'วันที่ที่สั่ง', value: 'datebill' },
+      { text: "ลำดับ", align: "start", sortable: false, value: "ลำดับ" },
+      { text: "เวลาที่สั่ง", value: "timebill" },
+      { text: "วันที่ที่สั่ง", value: "datebill" },
       // { text: 'สถานะ', value: 'id_bill' },
-     { text: 'รายละเอียด',value: 'ac', sortable: false }, 
-     { text: '', value: 'actions', sortable: false },
-
+      { text: "รายละเอียด", value: "id_product", sortable: false },
+      { text: "จำนวน", value: "quantity"},
+      { text: "", value: "actions", sortable: false },
     ],
     desserts: [],
     desserts1: [],
     desserts2: [],
     desserts3: [],
+    orderData: [],
   }),
-
   watch: {
-    dialog (val) {
-      val || this.close()
+    dialog(val) {
+      val || this.close();
     },
-     dialogDelete (val) {
-      val || this.closeDelete()
+    dialogDelete(val) {
+      val || this.closeDelete();
     },
-    
   },
-
-    created () {
-      this.consultaritems()
-      this.datatDetail()
-       this.datatDetail1()
-    },
-
+  created() {
+    this.consultaritems();
+    // this.getOrderTime();
+    // this.getOrderDetails();
+    // console.log(111, orderData)
+  },
+  async mounted() {
+    // console.log(111, this.dialogDelete);
+    this.orderData = await [...this.desserts2, ...this.desserts3];
+    console.log('222 orderData', this.orderData);
+  },
   methods: {
-    consultaritems(){
-            fetch('http://localhost/menunoodle/queueOr.php')
-            .then(respuesta=>respuesta.json())
-            .then((datosRespuesta)=>{
-                console.log(datosRespuesta)
-                // this.menulist=[]
-                // this.menulist.calories=Response
-                if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts=datosRespuesta;
-                }
-            }).catch(console.log)
+    getItemDetails(index) {
+      // console.log(this.getItemIndex());
+      // console.log()
+      alert(index);
+      this.dialogDelete = true;
     },
-   
-    deletetable(id_bill){
-            console.log(id_bill);
-            fetch('http://localhost/menunoodle/queueOr.php/?deletetablee='+id_bill)
-            .then(respuesta=>respuesta.json())
-            .then((desserts)=>{
-              console.log(desserts)
-            }).catch(console.log)
+    async consultaritems() {
+      await fetch("http://localhost/menunoodle/queueOr.php")
+        .then((res) => res.json())
+        .then((dataRes) => {
+          console.log(dataRes);
+          // this.menulist=[]
+          // this.menulist.calories=Response
+          if (typeof dataRes[0].success === "undefined") {
+            this.desserts = dataRes;
+          }
+        })
+        .catch(console.log);
     },
-    datatDetail1(){
-            fetch('http://localhost/menunoodle/testdatabase2.php')
-            .then(respuesta=>respuesta.json())
-            .then((datosRespuesta)=>{
-                console.log(datosRespuesta)
-                // this.menulist=[]
-                // this.menulist.calories=Response
-                if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts3=datosRespuesta;
-                }
-            }).catch(console.log)
-      },
-      datatDetail(){
-            fetch('http://localhost/menunoodle/testdatabase.php')
-            .then(respuesta=>respuesta.json())
-            .then((datosRespuesta)=>{
-                console.log(datosRespuesta)
-                // this.menulist=[]
-                // this.menulist.calories=Response
-                if(typeof datosRespuesta[0].success==='undefined'){
-                    this.desserts2=datosRespuesta;
-                }
-            }).catch(console.log)
-      },
-     
-      
-    
+    async deletetable(id_bill) {
+      // console.log(id_bill);
+      await fetch(
+        "http://localhost/menunoodle/queueOr.php/?deletetablee=" +id_bill)
+        .then((res) => res.json())
+        .catch(console.log);
+    },
+    // async getOrderDetails() {
+    //   await fetch("http://localhost/menunoodle/testdatabase2.php", )
+    //     .then((res) => res.json())
+    //     .then((dataRes) => {
+    //       if (typeof dataRes[0].success === "undefined") {
+    //         this.desserts3 = dataRes;
+    //       }
+    //     })
+    //     .catch(console.log);
+    // },
+    // async getOrderTime() {
+    //   await fetch("http://localhost/menunoodle/testdatabase.php")
+    //     .then((res) => res.json())
+    //     .then((dataRes) => {
+    //       console.log(dataRes);
+    //       if (typeof dataRes[0].success === "undefined") {
+    //         this.desserts2 = dataRes;
+    //       }
+    //     })
+    //     .catch(console.log);
+    // },
+
     reloadPage() {
-            window.location.reload();
+      window.location.reload();
     },
 
-      // Color of Status
-    getColor (id_bill) {
-            if (id_bill == 1) return '#4CAF50'
-            else return '#FF9800' 
-       
+    // Color of Status
+    getColor(id_bill) {
+      if (id_bill == 1) return "#4CAF50";
+      else return "#FF9800";
     },
-    getColor2(actions,){
-            if(actions==actions) return 'red'
+    getColor2(actions) {
+      if (actions == actions) return "red";
     },
-    getColor3(ac){
-            if(ac==ac) return '#1E88E5'
-     },
+    getColor3(ac) {
+      if (ac == ac) return "#1E88E5";
+    },
   },
-}
+};
 </script>

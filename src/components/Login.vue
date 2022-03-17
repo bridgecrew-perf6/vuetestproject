@@ -36,7 +36,7 @@
                     v-model="password"
                     :rules="validation.passwordRules"
                     :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:append="passwordShow = !passwordShow"
+                    @click:append="passwordShow =! passwordShow"
                     outlined
                   >
                   </v-text-field>
@@ -49,10 +49,19 @@
                     x-large
                     block
                     dark
-                    >Login</v-btn
-                  >
-                  <!-- checkbox -->
-                </v-form>
+                    >Login</v-btn>
+                    
+            
+                </v-form> <br> 
+                <v-btn
+                    type="submit"
+                    class="rounded-0"
+                    color="green"
+                    x-large
+                    block
+                    dark
+                    to="/Register"
+                    >Register</v-btn>
                 <div class="error" v-if="error">{{ error.message }}</div>
               </v-card-text>
             </v-card>
@@ -64,48 +73,78 @@
 </template>
 
 <script>
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 export default {
-  data(){
+  data() {
     return {
-         passwordShow:false,
-         email: '',
-         password: '',
-         error: '',
-        
+      passwordShow: false,
+      email: "",
+      password: "",
+      error: "",
 
-        validation: {
-         email: '',
-         emailRules: [
-           v => !!v || 'E-mail is required',
-           v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      validation: {
+        email: "",
+        emailRules: [
+          (v) => !!v || "E-mail is required",
+          (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
         ],
-         password: '',
-         passwordRules: [
-           v => !!v || 'Password is required',
-           v => (v && v.length >= 8) || 'Password must be less than 8 characters',
+        password: "",
+        passwordRules: [
+          (v) => !!v || "Password is required",
+          (v) =>
+            (v && v.length >= 8) || "Password must be less than 8 characters",
         ],
-        }
-     }
+      },
+    };
   },
 
-  methods:{
-      async pressed() {
-          if(this.email == ""  || this.password == ""){
-            alert("validation")
-          } else {
-          try {
-            const val = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-            console.log(val);
-            this.$router.replace({ name: 'App1'})
-            }catch(err) {
-             console.log(err)
-          }
-       }
-     }
-  }
-}
+  methods: {
+    async pressed() {
+      if (this.email == "" || this.password == "") {
+        alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      } else {
+        await firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            if (result) {
+              localStorage.setItem("token", "xx1122");
+            }
+            // var token = result.credential.accessToken;
+            // The signed-in user info.
+            // var user = result.user;
+            // const token = result.getIdToken().then(data => console.log(888, data))
+            // console.log('chkToken', token)
+            // console.log(222, to);
+            // console.log(222, user.accessToken);
+            // localStorage.setItem('token', token)
+            // try {
+            //   // console.log(val._delegate.accessToken);
+            //   // const token = val.getToken()
+            //   // localStorage.setItem("token", token)
+            //   this.$router.replace({ path: '/'})
+            // }).catch(err => console.log(err)).finally()
+            // }catch(err) {
+            //  console.log(err)
+            // chkUser
+            const userToken = localStorage.getItem("token");
+            if (userToken) {
+              alert("ลงชื่อเข้าใช้สำเร็จ");
+              this.$router.replace({ name: 'menupage' });
+            }
+          })
+          .catch((err) => {
+            console.log("err", err);
+            alert("กรุณาตรวจสอบ Email หรือ Password");
+            // error path
+            // this.$router.replace({ path: '/'})
+          });
+      }
+    },
+  },
+};
 </script>

@@ -8,15 +8,6 @@
           <v-col cols="10" md="4" >
             <v-card elevation="0">
 
-
-              <!-- Picture -->
-              <!-- <v-app-bar
-              color="#01579B"
-              x-large block dark
-              font-size="16"
-              >
-              Register
-              </v-app-bar> -->
               <v-img src="../assets/undraw.svg" alt="Fedorae Education Log" contain 
               height="200"></v-img>
           
@@ -25,7 +16,7 @@
               
               <v-form @submit.prevent="pressed">
 
-              <!-- Email -->
+              
               <v-text-field 
               type="email"
               label="Email"
@@ -62,17 +53,29 @@
               outlined
               v-model="userID.cpassword"
               :rules="passwordRules" 
+
               required>
               </v-text-field>
 
               <!-- Button -->
               <v-btn class="rounded-0"
-              color="#01579B" 
+              color="green" 
               x-large block dark
               type="submit" 
               >
               Register
               </v-btn>
+              <br>
+              <v-btn
+                    type="submit"
+                    class="rounded-0"
+                    color="#01579B"
+                    x-large
+                    block
+                    dark
+                    to="/"
+                    >Login</v-btn>
+                    
 
               <!-- Checkbox -->
               <v-card-actions class="text--secondary">
@@ -109,9 +112,11 @@ data(){
           password:'',
           cpassword:'',
           error:'',
-          passwordShow:'false',
-          cpasswordShow:'false'       
+          passwordShow:false,
+          cpasswordShow:false       
       },
+
+    
 
 
       // valid: true,
@@ -143,12 +148,13 @@ data(){
   methods:{
    async pressed(){
    if(this.userID.email == ""  || this.userID.password == ""){
-         alert("validation")
+         alert("กรุณากรอกข้อมูลให้ครบถ้วน")
    }else{
-       try{       
+       try{      
+        alert("บันทึกข้อมูลสำเร็จ"); 
         const user = firebase.auth().createUserWithEmailAndPassword(this.userID.email,this.userID.password)
         console.log(user)
-        this.$router.replace({name: "login"});
+        this.$router.replace({ path: "/"});
       }catch(err){
           console.log(err)
        }

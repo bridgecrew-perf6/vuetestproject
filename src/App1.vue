@@ -1,3 +1,4 @@
+
 <template>
   <v-app class="grey lighten-4">
     <navbar />
@@ -11,7 +12,7 @@
 import navbar from "./components/navbar.vue";
 
 export default {
-  name: "App1",
+  name: "App",
   components: {
     navbar,
   },
@@ -22,4 +23,5 @@ export default {
   },
 };
 </script>
+
 

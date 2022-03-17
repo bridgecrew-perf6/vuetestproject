@@ -1,18 +1,21 @@
 <template>
   <div>
     <v-container fluid ma-0>
-        <v-row no-gutters>
+      <v-row no-gutters>
         <v-col cols="9" justify="left">
           <v-container>
             <v-layout row wrap>
-              <v-col v-for="menu in menu" :key="menu.id">
-                <v-card height="100%" width="250" class="text-center" color="#80CBC4">
-                  <v-card-text class="text-h6" 
-                    >{{ menu.name_product}}<br />{{ menu.price_product }} ฿ <br />
-                    <v-btn
-                      color="primary"
-                      @click="addItem(menu)"
-                      class="mt-2"
+              <v-col v-for="product in product" :key="product.id">
+                <v-card
+                  height="100%"
+                  width="250"
+                  class="text-center"
+                  color="#80CBC4"
+                >
+                  <v-card-text class="text-h6"
+                    >{{ product.name_product }}<br />{{ product.price_product }} ฿
+                    <br />
+                    <v-btn color="primary" @click="addItem(product)" class="mt-2"
                       >Add</v-btn
                     >
                   </v-card-text>
@@ -21,8 +24,8 @@
             </v-layout>
           </v-container>
         </v-col>
-<!-- //////////////////////////////////////////////////// -->
- <v-dialog v-if="item" v-model="dialogAdd" max-width="500px">
+        <!-- //////////////////////////////////////////////////// -->
+        <v-dialog v-if="item" v-model="dialogAdd" max-width="500px">
           <v-card>
             <v-card-title>
               <span class="text-h5">เพิ่มรายการ</span>
@@ -42,19 +45,17 @@
                       </v-col>
                       <v-col cols="6">
                         <v-select
-                        v-model="item.name_noo"
-                        :items="noodle"
-                        attach
-                        item-text="name_noo"
-                        item-value="id"
-                        label="เลือกเส้น"
-                        return-object
-                        
-                        
+                          v-model="item.name_noo"
+                          :items="noodle"
+                          attach
+                          item-text="name_noo"
+                          item-value="id"
+                          label="เลือกเส้น"
+                          return-object
                         ></v-select>
                       </v-col>
-                    </v-row> 
-                    <v-col cols="12" >
+                    </v-row>
+                    <v-col cols="12">
                       <v-select
                         v-model="item.name_ingre"
                         :items="ingredients"
@@ -68,24 +69,24 @@
                       ></v-select>
                     </v-col>
                     <v-row>
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="item.quantity"
-                        label="จำนวนชาม"
-                        type="number"
-                        min="1"
-                        start ="1"
-                        :rules="quantityRules"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field
-                        v-model="item.price_product"
-                        label="ราคา (฿)"
-                        type="number"
-                        readonly
-                      ></v-text-field>
-                    </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="item.quantity"
+                          label="จำนวนชาม"
+                          type="number"
+                          min="1"
+                          start="1"
+                          :rules="quantityRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="item.price_product"
+                          label="ราคา (฿)"
+                          type="number"
+                          readonly
+                        ></v-text-field>
+                      </v-col>
                     </v-row>
                   </v-form>
                 </v-row>
@@ -93,33 +94,14 @@
             </v-card-text>
 
             <v-card-actions>
-              <v-spacer></v-spacer> 
-              <v-btn
-                  class="ma-2"
-                  color="primary"
-                  dark
-                  @click="addToCart(item)"
-                >
-                  บันทึก
-                  <v-icon
-                    dark
-                    right
-                  >
-                    mdi-checkbox-marked-circle
-                  </v-icon>
-                </v-btn>
-              <v-btn class="ma-2"
-                  color="red"
-                  dark  
-                  @click="clearcl"
-                  >
+              <v-spacer></v-spacer>
+              <v-btn class="ma-2" color="primary" dark @click="addToCart(item)">
+                บันทึก
+                <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+              </v-btn>
+              <v-btn class="ma-2" color="red" dark @click="clearcl">
                 ยกเลิก
-                <v-icon
-                    dark
-                    right
-                  >
-                    mdi-cancel
-                  </v-icon>
+                <v-icon dark right> mdi-cancel </v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -130,7 +112,7 @@
               <v-app id="inspire">
                 <v-data-table
                   :headers="headers"
-                  :items="menuadd"
+                  :items="menuAdd"
                   class="elevation-1"
                 >
                   <template v-slot:top>
@@ -138,16 +120,15 @@
                       <v-toolbar-title>Bill</v-toolbar-title>
                       <v-divider class="mx-4" inset vertical></v-divider>
                       <v-spacer></v-spacer>
-                          <v-btn
-                            color="primary"
-                            dark
-                            class="mb-2"
-                            @click="submitData"
-                          >
-                            เพิ่มรายการก๋วยเตี๋ยว
-                          </v-btn>
-                       
-                      
+                      <v-btn
+                        color="primary"
+                        dark
+                        class="mb-2"
+                        @click="sendDataBill"
+                      >
+                        เพิ่มรายการก๋วยเตี๋ยว
+                      </v-btn>
+
                       <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
                           <v-card-title class="text-h5"
@@ -175,25 +156,23 @@
                     </v-toolbar>
                   </template>
                   <template v-slot:[`item.actions`]="{ item }">
-                    <v-icon small @click="checkid(item.id_product)">
+                    <v-icon small @click="deleteItem(item)">
                       mdi-delete
                     </v-icon>
                   </template>
-                   <template slot="body.append" >
-                    <tr class="pink--text" >
-                        <th class="title" >รวม</th>
-                        <th class="title">{{total()}}</th>
-                        <th class="title" >บาท</th>
-                        
+                  <template slot="body.append">
+                    <tr class="pink--text">
+                      <th class="title">รวม</th>
+                      <th class="title">{{ total() }}</th>
+                      <th class="title">บาท</th>
                     </tr>
-                </template>
+                  </template>
                 </v-data-table>
               </v-app>
             </div>
           </v-container>
         </v-col>
-<!-- //////////////////////////////////////////////////// -->
-
+        <!-- //////////////////////////////////////////////////// -->
       </v-row>
     </v-container>
   </div>
@@ -218,25 +197,22 @@ export default {
           value: "name_product",
         },
         { text: "จำนวน", value: "quantity" },
-        { text: "ราคา", value: "price_product" }, 
+        { text: "ราคา", value: "price_product" },
         { text: "รวม", value: "total" },
-        { text: "555", value: "actions", sortable: false },
-        
-        
+        { text: "", value: "actions", sortable: false },
       ],
-      menuadd:[],
-      noodle:[],
-      menu: [],
+      menuAdd: [],
+      noodle: [],
+      product: [],
       editedIndex: -1,
       editedItem: {
-      name_product: "",
-      price_product: "",
+        name_product: "",
+        price_product: "",
       },
       defaultItem: {
-        name_ingre:"",
-        name_noo:"",
-        quantity:"1"
-     
+        name_ingre: "",
+        name_noo: "",
+        quantity: "1",
       },
       ingredient: [],
       ingredients: [],
@@ -245,11 +221,9 @@ export default {
   },
 
   computed: {
-     listTable() {
+    listTable() {
       return [];
     },
-    
-   
   },
 
   watch: {
@@ -262,97 +236,85 @@ export default {
   },
 
   created() {
-    this.gettable();
-    this.consultaritems();
-    this.consultaritems2()
-   
+    this.getDataProduct();
+    this.getDataIngredients();
+    this.getDataNoodle();
   },
 
   methods: {
- 
-
-    submitData() {
+    sendDataBill() {
       {
-        if(this.total() != '0' ){
-        console.log(this.menuadd);
-        axios.post("http://localhost/menunoodle/menuapi14.php", {
-          totalbill:this.total(),
-          // id_product:this.item.id_product,
-          menuadd:this.menuadd,
-          // menuadd:this.menuadd()
-        }).then(res => {console.log(res)}).catch(err => {console.log(err)});
-      }this.cancelmenuadd() 
-    
-    }}, addToCart(item) {
-      if(this.item.quantity  != ''){
-        this.menuadd.push({
-        id_product:item.id_product,
-        name_product:item.name_product,
-        name_noo:item.name_noo,
-        name_ingre:item.name_ingre,
-        quantity:item.quantity,
-        price_product:item.price_product,
-        total:item.quantity * item.price_product,
+        if (this.total() != "0") {
+          console.log(this.menuAdd);
+          axios
+            .post("http://localhost/menunoodle/sendDataBill.php", {
+              totalbill: this.total(),
+              menuAdd: this.menuAdd,
+              })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+        this.cancelmenuAdd();
+      }
+    },
+    addToCart(item) {
+      if (this.item.quantity != "") {
+        this.menuAdd.push({
+          id_product: item.id_product,
+          name_product: item.name_product,
+          name_noo: item.name_noo,
+          name_ingre: item.name_ingre,
+          quantity: item.quantity,
+          price_product: item.price_product,
+          total: item.quantity * item.price_product,
         }),
-      this.clear()}console.log(item)},
-    
-    
-    
-    // submitData2(){
-    //   console.log(this.item.id_product)
-    //   axios.post("http://localhost/menunoodle/menuapi15.php",{
-    //     id_product:this.item.id_product,
-    //     // name_noo: this.noodle.name_noo,
-    //     // name_ingre: this.ingredients.name_ingre,
-    //     // quantity: this.item.quantity,
-    //     // price_product:this.item.price_product
+          this.clear();
+      }
+      console.log(item);
+    },
 
-    //   })
-
-      
-
-    // },
-
-    gettable() {
-      axios.get("http://localhost/menunoodle/menuapi2.php").then((res) => {
-        this.menu = res.data;
+    getDataProduct() {
+      axios.get("http://localhost/menunoodle/fetchProduct.php").then((res) => {
+        this.product = res.data;
       });
     },
-     consultaritems(){
-            fetch('http://localhost/menunoodle/menuapi8.php')
-            .then(respuesta=>respuesta.json())
-            .then((datosRespuesta)=>{
-                console.log(datosRespuesta)
-                if(typeof datosRespuesta[0].success==='undefined'){
-                    this.ingredients=datosRespuesta;
-                }
-            }).catch(console.log)},
-             consultaritems2(){
-            fetch('http://localhost/menunoodle/menuapi10.php')
-            .then(respuesta=>respuesta.json())
-            .then((datosRespuesta)=>{
-                console.log(datosRespuesta)
-                // this.menulist=[]
-                // this.menulist.calories=Response
-                if(typeof datosRespuesta[0].success==='undefined'){
-                    this.noodle=datosRespuesta;
-                }
-            }).catch(console.log)},
-
-    editItem(item) {
-      this.editedIndex = this.menu.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    getDataIngredients() {
+      fetch("http://localhost/menunoodle/fetchIngredients.php")
+        .then((respuesta) => respuesta.json())
+        .then((datosRespuesta) => {
+          console.log(datosRespuesta);
+          if (typeof datosRespuesta[0].success === "undefined") {
+            this.ingredients = datosRespuesta;
+          }
+        })
+        .catch(console.log);
+    },
+    getDataNoodle() {
+      fetch("http://localhost/menunoodle/fetchNoodle.php")
+        .then((respuesta) => respuesta.json())
+        .then((datosRespuesta) => {
+          console.log(datosRespuesta);
+          // this.menulist=[]
+          // this.menulist.calories=Response
+          if (typeof datosRespuesta[0].success === "undefined") {
+            this.noodle = datosRespuesta;
+          }
+        })
+        .catch(console.log);
     },
 
     deleteItem(item) {
-      this.editedIndex = this.menuadd.indexOf(item);
+      this.editedIndex = this.menuAdd.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.menuadd.splice(this.editedIndex, 1);
+      this.menuAdd.splice(this.editedIndex, 1);
       this.closeDelete();
       this.dialogDelete = false;
     },
@@ -373,60 +335,34 @@ export default {
       });
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.menu[this.editedIndex], this.editedItem);
-      } else {
-        this.menu.push(this.editedItem);
-      }
-      this.close();
-    },
-     addItem(item) {
+    addItem(item) {
       this.item = item;
       this.dialogAdd = true;
       console.log(item);
     },
-   
-      
-      clear () {
-      this.item.quantity = ''
-      this.item.name_noo = ''
-      this.item.name_ingre = null
+
+    clear() {
+      this.item.quantity = "";
+      this.item.name_noo = "";
+      this.item.name_ingre = null;
       this.dialogAdd = !this.dialogAdd;
     },
-    clearcl () {
-      this.item.quantity = ''
-      this.item.name_noo = ''
-      this.item.name_ingre = null
+    clearcl() {
+      this.item.quantity = "";
+      this.item.name_noo = "";
+      this.item.name_ingre = null;
       this.dialogAdd = !this.dialogAdd;
-      
-    },total(){
-      var sum=0;
-      this.menuadd.forEach(function(item){
-        sum+=item.total
-      })
-      return sum
-      
-    },cancelmenuadd() {
-    this.menuadd = [];
-    },checkid(id_product){
-      console.log(id_product)
-    }
-    
-     
-
-      
-    // consultaritems(){
-    //         fetch('http://localhost/menunoodle/menuapi2.php')
-    //         .then(respuesta=>respuesta.json())
-    //         .then((datosRespuesta)=>{
-    //             console.log(datosRespuesta)
-    //             this.menulist=[]
-    //             // this.menulist.calories=Response
-    //             if(typeof datosRespuesta[0].success==='undefined'){
-    //                 this.desserts=datosRespuesta;
-    //             }
-    //         }).catch(console.log)}
+    },
+    total() {
+      var sum = 0;
+      this.menuAdd.forEach(function (item) {
+        sum += item.total;
+      });
+      return sum;
+    },
+    cancelmenuAdd() {
+      this.menuAdd = [];
+    },
   },
 };
 </script>
@@ -434,6 +370,5 @@ export default {
 <style>
 .a {
   font-size: 5rem;
-
 }
 </style>
