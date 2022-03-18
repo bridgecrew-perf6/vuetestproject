@@ -7,7 +7,7 @@
             <v-card elevation="0">
               <!-- Picture -->
               <v-img
-                src="../assets/login.svg"
+                src="../assets/TEOWS.png"
                 alt="Fedorae Education Log"
                 contain
                 height="200"
@@ -36,7 +36,7 @@
                     v-model="password"
                     :rules="validation.passwordRules"
                     :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:append="passwordShow =! passwordShow"
+                    @click:append="passwordShow = !passwordShow"
                     outlined
                   >
                   </v-text-field>
@@ -49,19 +49,20 @@
                     x-large
                     block
                     dark
-                    >Login</v-btn>
-                    
-            
-                </v-form> <br> 
+                    >Login</v-btn
+                  >
+                </v-form>
+                <br />
                 <v-btn
-                    type="submit"
-                    class="rounded-0"
-                    color="green"
-                    x-large
-                    block
-                    dark
-                    to="/Register"
-                    >Register</v-btn>
+                  type="submit"
+                  class="rounded-0"
+                  color="green"
+                  x-large
+                  block
+                  dark
+                  to="/Register"
+                  >Register</v-btn
+                >
                 <div class="error" v-if="error">{{ error.message }}</div>
               </v-card-text>
             </v-card>
@@ -134,7 +135,7 @@ export default {
             const userToken = localStorage.getItem("token");
             if (userToken) {
               alert("ลงชื่อเข้าใช้สำเร็จ");
-              this.$router.replace({ name: 'menupage' });
+              this.$router.replace({ name: "menupage" });
             }
           })
           .catch((err) => {

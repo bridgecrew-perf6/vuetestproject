@@ -29,7 +29,7 @@
             <span class="font-weight-light">Teow</span>
             <span>Teow</span>
           </v-list-item-title>
-          <v-list-item-subtitle> Admin สองรัก</v-list-item-subtitle>
+          <v-list-item-subtitle class="font-weight-light">Admin</v-list-item-subtitle>
           <span></span>
         </v-list-item-content>
       </v-list-item>
@@ -86,7 +86,7 @@ export default {
         { icon: "ramen_dining", text: "Noodle", route: "/Noodle" },
         { icon: "dashboard", text: "test", route: "/test" },
         { icon: "dashboard", text: "tables", route: "/tables" },
-        { icon: "dashboard", text: "login", route: "/" },
+        // { icon: "dashboard", text: "login", route: "/" },
       ],
     };
   },

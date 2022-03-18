@@ -8,7 +8,7 @@
           <v-col cols="10" md="4" >
             <v-card elevation="0">
 
-              <v-img src="../assets/undraw.svg" alt="Fedorae Education Log" contain 
+              <v-img src="../assets/TEOWS.png" alt="Fedorae Education Log" contain 
               height="200"></v-img>
           
 

@@ -40,7 +40,7 @@ export default {
       { text: "ลำดับ", align: "start", sortable: false, value: "ลำดับ" },
       { text: "เวลาที่สั่ง", value: "timebill" },
       { text: "วันที่ที่สั่ง", value: "datebill" },
-      { text: "รายละเอียด", value: "id_product", sortable: false },
+      { text: "รายการ", value: "id_product", sortable: false },
       { text: "จำนวน", value: "quantity"},
       { text: "", value: "actions", sortable: false },
     ],
