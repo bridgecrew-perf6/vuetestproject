@@ -51,7 +51,21 @@
           </v-list-item>
         </v-list-item-group>
         </div>
-        <div v-else>
+         <!-- <div v-else>
+        <v-list-item-group v-for="link in links" :key="link.text">
+          <v-list-item :to="link.route">
+            <v-list-item-icon>
+              <v-icon class="white-text">{{ link.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title class="white-text"
+                >{{ link.text }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+        </div> -->
+        <!-- <div v-else>
           <v-list-item-group>
           <v-list-item to="/">
             <v-list-item-icon>
@@ -65,7 +79,7 @@
           </v-list-item>
           </v-list-item-group>
         </div>
-        
+         -->
       </v-list>
     </v-navigation-drawer>
   </nav>
@@ -93,6 +107,7 @@ export default {
   methods: {
     checkUser() {
       const userToken = localStorage.getItem("token");
+      // var a = false
       if (userToken) {
         return true;
       }

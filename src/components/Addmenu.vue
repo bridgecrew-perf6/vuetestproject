@@ -86,7 +86,7 @@
                   class="ma-2"
                   color="primary"
                   dark
-                  @click="sendData"
+                  @click="sendDataProduct"
                 >
                   บันทึก
                   <v-icon
@@ -210,7 +210,7 @@ data() {
 
   created () {
     this.getShowDataProduct();
-    this.deletetable();
+    this.deleteDataMenu();
   },
  
 

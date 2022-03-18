@@ -140,7 +140,7 @@ export default {
           })
           .catch((err) => {
             console.log("err", err);
-            alert("กรุณาตรวจสอบ Email หรือ Password");
+            alert("กรุณาตรวจสอบ Email หรือ Password ให้ถูกต้อง");
             // error path
             // this.$router.replace({ path: '/'})
           });
