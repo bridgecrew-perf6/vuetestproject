@@ -10,6 +10,7 @@ if ($request != null) {
 
   $totalbill = $request->totalbill;
   $menuAdd = $request->menuAdd;
+  $quantity_noo = $request->quantity_noo;
 
   // var_dump($request);
 
@@ -68,26 +69,45 @@ if ($request != null) {
   }
 
 
+  // "1Array
+  // (
+  //     [0] => stdClass Object
+  //         (
+  //             [id_product] => 1
+  //             [name_product] => ก๋วยเตี๋ยวต้มยำ
+  //             [name_noo] => stdClass Object
+  //                 (
+  //                     [id_noo] => 1
+  //                     [name_noo] => เส้นเล็ก
+  //                     [date_noo] => 2022-03-04
+  //                     [exp_noo] => 2022-03-14
+  //                     [quantity_noo] => 500
+  //                 )
+  
+  //             [quantity] => 1
+  //             [price_product] => 80
+  //             [total] => 80
+  //         )
+  
+  // )
+  // "
+
+
+
 
   // foreach ($menuAdd as $item3) {
-  //   $id = $item3->id;
-  //   $quantity_ingre = $item3->quantity_ingre;
-  //   $stmt5 = $conn->prepare("INSERT INTO q_in (id,quantity_ingre) 
-  //   VALUES (?,?)");
+  //   $quantity_noo = $item3->quantity_noo;
+  //   $stmt5 = $conn->prepare("INSERT INTO q_in (quantity_noo) 
+  //   VALUES (?)");
   //   // $stmt = $pdo->prepare("INSERT INTO users (name, pass, mail, created, timezone_name, hash_pass, salt) VALUES (?, ?, ?, ?, ?, ?, ?)") ;
-  //   $values3 = [$id,$quantity_ingre];
+  //   $values3 = [$quantity_noo];
   //   //bindParam data type
   //   // $stmt2->bindParam('id_product', $id_product, PDO::PARAM_STR);
   //   $stmt5->execute($values3);
   //   // $result2 = $stmt2->execute();
   // }
 
-  
-  // $stmt3 = $conn->prepare("INSERT INTO queue_order (id_bill) 
-  // VALUES ($id_bill)");
-  // //bindParam data type
 
-  // $result3 = $stmt3->execute();
 
   $conn = null; //close connect db
 

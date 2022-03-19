@@ -10,7 +10,7 @@
         <span>Teow</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn color="lightgrey" to="/">
+      <v-btn color="lightgrey" @click="logout">
         <span>Logout</span>
         <v-icon>exit_to_app</v-icon>
       </v-btn>
@@ -107,11 +107,15 @@ export default {
   methods: {
     checkUser() {
       const userToken = localStorage.getItem("token");
-      // var a = false
+      
       if (userToken) {
         return true;
       }
     },
+    logout(){
+      localStorage.clear()
+       this.$router.replace({ path: "/" });
+    }
   },
 };
 </script>

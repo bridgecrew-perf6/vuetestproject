@@ -115,23 +115,6 @@ export default {
             if (result) {
               localStorage.setItem("token", "xx1122");
             }
-            // var token = result.credential.accessToken;
-            // The signed-in user info.
-            // var user = result.user;
-            // const token = result.getIdToken().then(data => console.log(888, data))
-            // console.log('chkToken', token)
-            // console.log(222, to);
-            // console.log(222, user.accessToken);
-            // localStorage.setItem('token', token)
-            // try {
-            //   // console.log(val._delegate.accessToken);
-            //   // const token = val.getToken()
-            //   // localStorage.setItem("token", token)
-            //   this.$router.replace({ path: '/'})
-            // }).catch(err => console.log(err)).finally()
-            // }catch(err) {
-            //  console.log(err)
-            // chkUser
             const userToken = localStorage.getItem("token");
             if (userToken) {
               alert("ลงชื่อเข้าใช้สำเร็จ");
@@ -141,8 +124,6 @@ export default {
           .catch((err) => {
             console.log("err", err);
             alert("กรุณาตรวจสอบ Email หรือ Password ให้ถูกต้อง");
-            // error path
-            // this.$router.replace({ path: '/'})
           });
       }
     },

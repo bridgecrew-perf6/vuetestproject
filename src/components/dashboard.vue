@@ -18,7 +18,7 @@
                                     <span  style="color: #01579B">Last 1 days</span>
                                 </div>
                                 <v-avatar size="70" :color="item.color"  style="border: 3px solid #29B6F6" >
-                                    <h3 style="color:  #01579B"><h4>{{item.quantity_ingre}} g</h4></h3>
+                                    <h3 style="color:  #01579B"><h4>{{item.total}} g</h4></h3>
                                 </v-avatar>
                             </v-card-text>
                             <v-card-actions class="d-flex justify-space-between">
@@ -45,7 +45,7 @@
                                     <span  style="color: #01579B">Last 1 days</span>
                                 </div>
                                 <v-avatar size="70" :color="item.color"  style="border: 3px solid #29B6F6" >
-                                    <h3 style="color:  #01579B"><h4>{{item.quantity_ingre}} g</h4></h3>
+                                    <h3 style="color:  #01579B"><h4>{{item.total}} g</h4></h3>
                                 </v-avatar>
                             </v-card-text>
                             <v-card-actions class="d-flex justify-space-between">
@@ -76,7 +76,7 @@
             },
 
         getShowDataIngredients(){
-            fetch('http://localhost/menunoodle/fetchIngredients.php')
+            fetch('http://localhost/menunoodle/fetchDashB.php')
             .then(respuesta=>respuesta.json())
             .then((datosRespuesta)=>{
                 console.log(datosRespuesta)

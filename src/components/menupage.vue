@@ -5,7 +5,7 @@
         <v-col cols="9" justify="left">
           <v-container>
             <v-layout row wrap>
-              <v-col v-for="product in product" :key="product.id">
+              <v-col v-for="product in products" :key="product.id">
                 <v-card
                   height="100%"
                   width="250"
@@ -13,9 +13,13 @@
                   color="#80CBC4"
                 >
                   <v-card-text class="text-h6"
-                    >{{ product.name_product }}<br />{{ product.price_product }} ฿
+                    >{{ product.name_product }}<br />{{ product.price_product }}
+                    ฿
                     <br />
-                    <v-btn color="primary" @click="addItem(product)" class="mt-2"
+                    <v-btn
+                      color="primary"
+                      @click="addItem(product)"
+                      class="mt-2"
                       >Add</v-btn
                     >
                   </v-card-text>
@@ -24,13 +28,11 @@
             </v-layout>
           </v-container>
         </v-col>
-        <!-- //////////////////////////////////////////////////// -->
         <v-dialog v-if="item" v-model="dialogAdd" max-width="500px">
           <v-card>
             <v-card-title>
               <span class="text-h5">เพิ่มรายการ</span>
             </v-card-title>
-
             <v-card-text>
               <v-container>
                 <v-row>
@@ -55,19 +57,22 @@
                         ></v-select>
                       </v-col>
                     </v-row>
-                    <v-col cols="12">
-                      <v-select
-                        v-model="item.name_ingre"
-                        :items="ingredients"
-                        attach
-                        item-text="name_ingre"
-                        item-value="id"
-                        chips
-                        label="ส่วนผสม"
-                        return-object
-                        multiple
-                      ></v-select>
-                    </v-col>
+                    <v-row>
+                      <v-col cols="12" v-for="(info, index) in item.info" :key="index">
+                        <v-row >
+                          <v-checkbox
+                            v-model="info.selected"
+                            item-text="name_ingre"
+                            attach
+                            item-value="id_ingre"
+                            hide-details
+                            class="shrink mr-2 mt-0"
+                            return-object
+                          ></v-checkbox>
+                          {{ info.name_ingre }}
+                        </v-row>
+                      </v-col>
+                    </v-row>
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
@@ -172,7 +177,6 @@
             </div>
           </v-container>
         </v-col>
-        <!-- //////////////////////////////////////////////////// -->
       </v-row>
     </v-container>
   </div>
@@ -203,7 +207,7 @@ export default {
       ],
       menuAdd: [],
       noodle: [],
-      product: [],
+      products: [],
       editedIndex: -1,
       editedItem: {
         name_product: "",
@@ -217,6 +221,7 @@ export default {
       ingredient: [],
       ingredients: [],
       menulist: [],
+      filteredItems: [],
     };
   },
 
@@ -234,13 +239,10 @@ export default {
       val || this.closeDelete();
     },
   },
-
-  created() {
-    this.getDataProduct();
-    this.getDataIngredients();
+  async created() {
+    await this.getDataProduct();
     this.getDataNoodle();
   },
-
   methods: {
     sendDataBill() {
       {
@@ -250,7 +252,7 @@ export default {
             .post("http://localhost/menunoodle/sendDataBill.php", {
               totalbill: this.total(),
               menuAdd: this.menuAdd,
-              })
+            })
             .then((res) => {
               console.log(res);
             })
@@ -263,37 +265,64 @@ export default {
     },
     addToCart(item) {
       if (this.item.quantity != "") {
+        const ingre = [];
+        item.info.forEach((el) => {
+          if (el.selected) {
+            ingre.push(el);
+          }
+        });
         this.menuAdd.push({
           id_product: item.id_product,
           name_product: item.name_product,
           name_noo: item.name_noo,
-          name_ingre: item.name_ingre,
+          name_ingre: ingre,
           quantity: item.quantity,
           price_product: item.price_product,
           total: item.quantity * item.price_product,
-        }),
-          this.clear();
+        });
+        console.log(this.menuAdd);
+        this.clear();
       }
-      console.log(item);
     },
-
     getDataProduct() {
-      axios.get("http://localhost/menunoodle/fetchProduct.php").then((res) => {
-        this.product = res.data;
-      });
+      axios
+        .get("http://localhost/menunoodle/fatchProductRecipe.php")
+        .then(async (res) => {
+          const productData = await res.data;
+          // console.log(111, res.data);
+          const result = await productData.reduce(
+            (
+              acc,
+              {
+                id_ingre,
+                id_product,
+                name_ingre,
+                name_product,
+                price_product,
+                quantity,
+              }
+            ) => {
+              acc[name_product] ??= {
+                name_product: name_product,
+                price_product: price_product,
+                id_product,
+                info: [],
+              };
+              acc[name_product].info.push({
+                id_ingre,
+                name_ingre,
+                quantity,
+                selected: false,
+              });
+              return acc;
+            },
+            {}
+          );
+          this.products = result;
+          console.log(result)
+        }); 
     },
-    getDataIngredients() {
-      fetch("http://localhost/menunoodle/fetchIngredients.php")
-        .then((respuesta) => respuesta.json())
-        .then((datosRespuesta) => {
-          console.log(datosRespuesta);
-          if (typeof datosRespuesta[0].success === "undefined") {
-            this.ingredients = datosRespuesta;
-          }
-        })
-        .catch(console.log);
-    },
-    getDataNoodle() {
+     getDataNoodle() {
       fetch("http://localhost/menunoodle/fetchNoodle.php")
         .then((respuesta) => respuesta.json())
         .then((datosRespuesta) => {
@@ -306,19 +335,16 @@ export default {
         })
         .catch(console.log);
     },
-
     deleteItem(item) {
       this.editedIndex = this.menuAdd.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
       this.menuAdd.splice(this.editedIndex, 1);
       this.closeDelete();
       this.dialogDelete = false;
     },
-
     close() {
       this.dialogAdd = false;
       this.$nextTick(() => {
@@ -326,7 +352,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
@@ -334,13 +359,11 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     addItem(item) {
       this.item = item;
       this.dialogAdd = true;
       console.log(item);
     },
-
     clear() {
       this.item.quantity = "";
       this.item.name_noo = "";
