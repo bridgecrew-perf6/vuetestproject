@@ -2,7 +2,7 @@
     <div class="dashboard">
         <br>
         <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
-            <h1><tr>ประวัติการใช้วัตถุดิบประจำวัน</tr> </h1>
+            <h1><tr>ประวัติการใช้วัตถุดิบประจำวัน {{date_now}}</tr> </h1>
             
             <!-- <v-btn color="success">
                 View Orders
@@ -62,6 +62,7 @@
         name: "Dashboard",
         data() {
             return {
+                date_now: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
                 ingredients: [],
             }
         },
