@@ -29,7 +29,7 @@
           </v-container>
             <br> <br>
             <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
-            <h1><tr>ประวัติการใช้เส้นประจำวัน</tr> </h1>
+            <h1><tr>ประวัติการใช้ถุดิบย้อนหลัง 3 วัน</tr> </h1>
             
             <!-- <v-btn color="success">
                 View Orders
@@ -37,7 +37,7 @@
         </v-subheader>
       <v-container fluid ma-0 >
             <v-row wrap >
-              <v-col cols="4"   v-for="(item,ingredients)  in ingredients" :key="ingredients.id">
+              <v-col cols="4"   v-for="(item,ingredients3day)  in ingredients3day" :key="ingredients3day.id">
                 <v-card elevation="2" class="rounded-lg" height="100%" width="500" color="#B3E5FC" >
                             <v-card-text class="d-flex justify-space-between align-center">
                                 <div>
@@ -64,12 +64,15 @@
             return {
                 date_now: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
                 ingredients: [],
+                ingredients3day:[]
+                 
             }
         },
         
         
         created () {
             this.getShowDataIngredients()
+            this.getShowDataIngredients3Day()
     },
     methods: {
         onButtonClick(item) {
@@ -84,6 +87,18 @@
                 // this.menulist.calories=Response
                 if(typeof datosRespuesta[0].success==='undefined'){
                     this.ingredients=datosRespuesta;
+                }
+            }).catch(console.log)
+        },
+
+        getShowDataIngredients3Day(){
+            fetch('http://localhost/menunoodle/fetchDashB3day.php')
+            .then(respuesta=>respuesta.json())
+            .then((datosRespuesta)=>{
+                console.log(datosRespuesta)
+                // this.menulist.calories=Response
+                if(typeof datosRespuesta[0].success==='undefined'){
+                    this.ingredients3day=datosRespuesta;
                 }
             }).catch(console.log)
         },

@@ -204,16 +204,16 @@
        
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon
+        <!-- <v-icon
           small
           class="mr-2"
           @click="editItem(item)"
         >
           mdi-pencil
-        </v-icon>
+        </v-icon> -->
         <v-icon
           small
-          @click="reloadPage(),deleteDataMenu(item.id_noo)"
+          @click="reloadPage(),deleteDataNooldle(item.id_noo)"
         >
           mdi-delete
         </v-icon>

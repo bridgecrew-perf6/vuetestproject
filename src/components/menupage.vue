@@ -10,9 +10,9 @@
                   height="100%"
                   width="250"
                   class="text-center"
-                  color="#80CBC4"
+                  color="#90CAF9"
                 >
-                  <v-card-text class="text-h6"
+                  <v-card-text class="text-h6 "
                     >{{ product.name_product }}<br />{{ product.price_product }}
                     ฿
                     <br />
@@ -45,7 +45,7 @@
                           readonly
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="6">
+                      <v-col cols="6" >
                         <v-select
                           v-model="item.name_noo"
                           :items="noodle"
@@ -58,8 +58,8 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="12" v-for="(info, index) in item.info" :key="index">
-                        <v-row >
+                      <v-col cols="3"  v-for="(info, index) in item.info" :key="index">
+                        <v-col row>{{ info.name_ingre }}
                           <v-checkbox
                             v-model="info.selected"
                             item-text="name_ingre"
@@ -69,14 +69,15 @@
                             class="shrink mr-2 mt-0"
                             return-object
                           ></v-checkbox>
-                          {{ info.name_ingre }}
-                        </v-row>
+                          
+                          </v-col>
+                        
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="6">
                         <v-text-field
-                          v-model="item.quantity"
+                          v-model="item.quantity_product"
                           label="จำนวนชาม"
                           type="number"
                           min="1"
@@ -200,7 +201,7 @@ export default {
           align: "start",
           value: "name_product",
         },
-        { text: "จำนวน", value: "quantity" },
+        { text: "จำนวน", value: "quantity_product" },
         { text: "ราคา", value: "price_product" },
         { text: "รวม", value: "total" },
         { text: "", value: "actions", sortable: false },
@@ -216,7 +217,7 @@ export default {
       defaultItem: {
         name_ingre: "",
         name_noo: "",
-        quantity: "1",
+        quantity_product: "1",
       },
       ingredient: [],
       ingredients: [],
@@ -264,7 +265,7 @@ export default {
       }
     },
     addToCart(item) {
-      if (this.item.quantity != "") {
+      if (this.item.quantity_product != null && this.item.name_noo != null ) {
         const ingre = [];
         item.info.forEach((el) => {
           if (el.selected) {
@@ -276,9 +277,9 @@ export default {
           name_product: item.name_product,
           name_noo: item.name_noo,
           name_ingre: ingre,
-          quantity: item.quantity,
+          quantity_product: item.quantity_product,
           price_product: item.price_product,
-          total: item.quantity * item.price_product,
+          total: item.quantity_product * item.price_product,
         });
         console.log(this.menuAdd);
         this.clear();
@@ -312,7 +313,7 @@ export default {
                 id_ingre,
                 name_ingre,
                 quantity,
-                selected: false,
+                selected: true,
               });
               return acc;
             },
@@ -365,13 +366,13 @@ export default {
       console.log(item);
     },
     clear() {
-      this.item.quantity = "";
+      this.item.quantity_product = "";
       this.item.name_noo = "";
       this.item.name_ingre = null;
       this.dialogAdd = !this.dialogAdd;
     },
     clearcl() {
-      this.item.quantity = "";
+      this.item.quantity_product = "";
       this.item.name_noo = "";
       this.item.name_ingre = null;
       this.dialogAdd = !this.dialogAdd;

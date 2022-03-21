@@ -42,13 +42,13 @@
                   <v-card-text>
                     <v-container>
                       <v-row>
-                        <v-col cols="12" sm="6" md="4">
+                        <v-col cols="6">
                           <v-text-field
                             v-model="product.name_product"
                             label="ชื่อเมนู"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4">
+                        <v-col cols="6">
                           <v-text-field
                             v-model="product.price_product"
                             label="ราคา(บาท)"
@@ -57,27 +57,39 @@
                             min="1"
                           ></v-text-field>
                         </v-col>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-row v-for="item in ingredients" :key="item.id">
-                              <v-checkbox
-                                v-model="item.selected"
-                                item-text="name_ingre"
-                                attach
-                                item-value="id_ingre"
-                                hide-details
-                                class="shrink mr-2 mt-0"
-                                return-object
-                              ></v-checkbox
-                              >{{ item.name_ingre }}
-                              <v-text-field
-                                label="กรัม"
-                                item-value="id_ingre"
-                                v-model="item.quantity"
-                              ></v-text-field>
-                            </v-row>
-                          </v-col>
-                        </v-row>
+                        <v-col row cols="12">
+                          <v-card>
+                            <v-card-text>
+                              <v-row
+                                v-for="item in ingredients"
+                                :key="item.id"
+                                align="center"
+                              >
+                                <v-col cols="3">
+                                  {{ item.name_ingre }}
+                                </v-col>
+
+                                <v-checkbox
+                                  v-model="item.selected"
+                                  item-text="name_ingre"
+                                  attach
+                                  item-value="id_ingre"
+                                  hide-details
+                                  class="shrink mr-2 mt-0"
+                                  return-object
+                                ></v-checkbox>
+
+                                <v-text-field
+                                  label="กรัม"
+                                  item-value="id_ingre"
+                                  class="ma-"
+                                  v-model="item.quantity"
+                                  >{{ item.name_ingre }}</v-text-field
+                                ><br>
+                              </v-row>
+                            </v-card-text>
+                          </v-card>
+                        </v-col>
                       </v-row>
                     </v-container>
                   </v-card-text>
@@ -122,9 +134,6 @@
           </v-toolbar>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
           <v-icon
             small
             v-on:click="reloadPage(), deleteDataMenu(item.id_product)"
@@ -184,7 +193,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "เพิ่มเมนู " : "แก้ไขเมนู";
+      return this.editedIndex === -1 ? "เพิ่มเมนู " : "เพิ่มเมนู";
     },
   },
 
@@ -243,7 +252,7 @@ export default {
       console.log("product:", this.product);
       const submitIngredients = [];
       this.ingredients.forEach((elem) => {
-        if(elem.selected) {
+        if (elem.selected) {
           submitIngredients.push(elem);
         }
       });
@@ -302,7 +311,7 @@ export default {
               // manipulate data
               this.ingredients = this.ingredients.map((v) => ({
                 ...v,
-                quantity: 0,
+                quantity: "",
                 selected: false,
               }));
               console.log("ingredeient: ", this.ingredients);
