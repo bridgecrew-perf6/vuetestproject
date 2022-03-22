@@ -10,10 +10,13 @@
         <span>Teow</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn color="lightgrey" @click="logout">
+      <div v-if="checkUser()">
+        <v-btn color="lightgrey" @click="logout">
         <span>Logout</span>
         <v-icon>exit_to_app</v-icon>
       </v-btn>
+      </div>
+      
     </v-toolbar>
 
     <v-navigation-drawer
@@ -91,15 +94,16 @@ export default {
     return {
       drawer: false,
       links: [
-        { icon: "restaurant_menu", text: "Menu", route: "/menupage" },
-        { icon: "add_to_queue", text: "Order", route: "/Queue" },
-        { icon: "add_circle", text: "Addmenu", route: "/Addmenu" },
-        { icon: "account_balance_wallet", text: "Finance", route: "/finance" },
-        { icon: "dashboard", text: "Dashboard", route: "/dashboard" },
-        { icon: "set_meal", text: "Raw Material", route: "/RawMaterial" },
-        { icon: "ramen_dining", text: "Noodle", route: "/Noodle" },
-        { icon: "dashboard", text: "test", route: "/test" },
-        { icon: "dashboard", text: "tables", route: "/tables" },
+        { icon: "restaurant_menu", text: "สั่งอาหาร", route: "/menupage" },
+        { icon: "fact_check", text: "คำสั่งซื้อ", route: "/Queue" },
+        { icon: "receipt_long", text: "ยอดขาย", route: "/finance" }, 
+        { icon: "set_meal", text: "วัตถุดิบ", route: "/RawMaterial" },
+        { icon: "ramen_dining", text: "เส้นก๋วยเตี๋ยว", route: "/Noodle" },
+        { icon: "history", text: "ประวัติการใช้วัตถุดิบ", route: "/dashboard" },
+        { icon: "menu_book", text: "รายการอาหาร", route: "/Addmenu" },
+       
+        // { icon: "dashboard", text: "test", route: "/test" },
+        // { icon: "dashboard", text: "tables", route: "/tables" },
         // { icon: "dashboard", text: "login", route: "/" },
       ],
     };

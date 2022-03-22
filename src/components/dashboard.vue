@@ -29,7 +29,7 @@
           </v-container>
             <br> <br>
             <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
-            <h1><tr>ประวัติการใช้ถุดิบย้อนหลัง 3 วัน</tr> </h1>
+            <h1><tr>ประวัติการใช้วัตถุดิบย้อนหลัง 3 วัน</tr> </h1>
             
             <!-- <v-btn color="success">
                 View Orders
