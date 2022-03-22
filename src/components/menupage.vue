@@ -20,7 +20,8 @@
                       color="primary"
                       @click="addItem(product)"
                       class="mt-2"
-                      >Add</v-btn
+                      >Add
+                      </v-btn
                     >
                   </v-card-text>
                 </v-card>
@@ -102,12 +103,12 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn class="ma-2" color="primary" dark @click="addToCart(item)">
-                บันทึก
-                <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+                
+                <v-icon>shopping_cart</v-icon>
               </v-btn>
               <v-btn class="ma-2" color="red" dark @click="clearcl">
                 ยกเลิก
-                <v-icon dark right> mdi-cancel </v-icon>
+                
               </v-btn>
             </v-card-actions>
           </v-card>

@@ -126,7 +126,7 @@
     search: '',
     headers: [
 
-      {text: 'ลำดับ',align: 'start',sortable: false,value: 'id_bill',},
+      {text: 'บิล',align: 'start',sortable: false,value: 'id_bill',},
       { text: 'จำนวน(บาท)', value: 'totalbill' },
       { text: 'วันที่', value: 'datebill' },
       { text: 'สถานะ', value: 'timebill' },

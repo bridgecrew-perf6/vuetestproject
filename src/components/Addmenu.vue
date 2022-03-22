@@ -85,7 +85,7 @@
                                   class="ma-"
                                   v-model="item.quantity"
                                   >{{ item.name_ingre }}</v-text-field
-                                ><br>
+                                ><br />
                               </v-row>
                             </v-card-text>
                           </v-card>
