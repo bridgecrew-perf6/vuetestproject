@@ -1,63 +1,212 @@
 <template>
-  <v-app :style="{background: $vuetify.theme.themes.light.background}">
-        <v-app style="background-color: grey lighten-1;" class="rounded">
-          <v-row>
-            <v-col cols="12" md="8" class="ligne">
-            <v-container>
-              <v-row>
-                <v-col cols="12" md="12">
-                  <h1 class="headline mb-2 grey--text">Money status </h1>
-                  <template>
-                    <div id="app">
-                      <GChart
-                        type="ColumnChart"
-                        :data="chartData"
-                        
-                      />    
-                    </div>
-                  </template>
-                </v-col>
-              </v-row>
-        </v-container>
-            </v-col>
-          </v-row>
-     </v-app>
+  <div class="dashboard">
+    <br />
+    <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
+      <h1>
+        <tr>
+          ประวัติการใช้วัตถุดิบประจำวัน
+          {{
+            date_now
+          }}
+        </tr>
+      </h1>
 
-  </v-app>
+      <v-btn color="success" @click="downloadDay"> Print Report </v-btn>
+    </v-subheader>
+    <v-container fluid ma-0>
+      <v-row wrap>
+        <v-col
+          cols="4"
+          v-for="(item, ingredients) in ingredients"
+          :key="ingredients.id"
+        >
+          <v-card
+            elevation="2"
+            class="rounded-lg"
+            height="100%"
+            width="500"
+            color="#B3E5FC"
+          >
+            <v-card-text class="d-flex justify-space-between align-center">
+              <div>
+                <h2 style="color: #01579b">{{ item.name_ingre }}</h2>
+                <span style="color: #01579b">Last 1 days</span>
+              </div>
+              <v-avatar
+                size="70"
+                :color="item.color"
+                style="border: 3px solid #29b6f6"
+              >
+                <h3 style="color: #01579b">
+                  <h4>{{ item.total }} g</h4>
+                </h3>
+              </v-avatar>
+            </v-card-text>
+            <v-card-actions class="d-flex justify-space-between">
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <br />
+    <br />
+    <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
+      <h1>
+        <tr>
+          ประวัติการใช้วัตถุดิบย้อนหลัง 3 วัน
+        </tr>
+      </h1>
+
+       <v-btn color="success" @click="download3Day"> Print Report </v-btn>
+    </v-subheader>
+    <v-container fluid ma-0>
+      <v-row wrap>
+        <v-col
+          cols="4"
+          v-for="(item, ingredients3day) in ingredients3day"
+          :key="ingredients3day.id"
+        >
+          <v-card
+            elevation="2"
+            class="rounded-lg"
+            height="100%"
+            width="500"
+            color="#B3E5FC"
+          >
+            <v-card-text class="d-flex justify-space-between align-center">
+              <div>
+                <h2 style="color: #01579b">{{ item.name_ingre }}</h2>
+                <span style="color: #01579b">Last 1 days</span>
+              </div>
+              <v-avatar
+                size="70"
+                :color="item.color"
+                style="border: 3px solid #29b6f6"
+              >
+                <h3 style="color: #01579b">
+                  <h4>{{ item.total }} g</h4>
+                </h3>
+              </v-avatar>
+            </v-card-text>
+            <v-card-actions class="d-flex justify-space-between">
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
-import { GChart } from "vue-google-charts";
+import jspdf from "jspdf";
+import autoTable from "jspdf-autotable";
 export default {
-   data: () => ({
-    chartData: [
-        ['วัน', "หมู", "ไก่", "เนื้อ","กุ้ง"],
-        ["อาทิตย์", 1000, 400, 200,20],
-        ["จันทร์", 1000, 400, 200,20],
-        ["อังคาร", 1170, 460, 250,40],
-        ["พุธ", 0, 1120, 300,10],
-        ["พฤหัสบดี", 1030, 540, 350,12],
-        ["ศุกร์", 1025, 530, 302,12],
-        ["เสาร์", 1040, 560, 356,10],
-      ],
-      
-  }),
-  name: 'App',
-  components: {
-    GChart
+  name: "Dashboard",
+  data() {
+    return {
+      date_now: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      ingredients: [[]],
+      ingredients3day: [],
+    };
   },
-  computed:{
-    theme(){
-      return (this.$vuetify.theme.dark) ? 'dark' : 'light'
-    }
-  }
+
+  created() {
+    this.getShowDataIngredients();
+    this.getShowDataIngredients3Day();
+  },
+  methods: {
+    onButtonClick(item) {
+      console.log("click on " + item.no);
+    },
+
+    getShowDataIngredients() {
+      fetch("http://localhost/menunoodle/fetchDashB.php")
+        .then((respuesta) => respuesta.json())
+        .then((datosRespuesta) => {
+          console.log(datosRespuesta);
+          // this.menulist.calories=Response
+          if (typeof datosRespuesta[0].success === "undefined") {
+            this.ingredients = datosRespuesta;
+          }
+        })
+        .catch(console.log);
+    },
+
+    getShowDataIngredients3Day() {
+      fetch("http://localhost/menunoodle/fetchDashB3day.php")
+        .then((respuesta) => respuesta.json())
+        .then((datosRespuesta) => {
+          console.log(datosRespuesta);
+          // this.menulist.calories=Response
+          if (typeof datosRespuesta[0].success === "undefined") {
+            this.ingredients3day = datosRespuesta;
+          }
+        })
+        .catch(console.log);
+    },
+    downloadDay() {
+      let data = this.ingredients;
+      const mappedDataArray = [];
+      for (const key in data) {
+        const mappedData = {
+          ...data[key],
+        };
+        mappedDataArray.push(mappedData);
+      }
+      console.log(mappedDataArray);
+      console.log(data);
+      let src = mappedDataArray;
+      let result = src.map((x) => Object.values(x));
+      console.log(result);
+      const doc = new jspdf();
+      doc.text("Report daily raw material usage history ", 10, 10)
+      doc.text("Date"+":"+this.date_now, 10, 20);
+      doc.line(0, 30, 400, 30);
+      
+      autoTable(doc, {
+        head: [["Name", "Total(g)",]],
+        margin: { top: 35},
+        body: result,
+      });
+      doc.save("Report daily"+" "+this.date_now+".pdf");
+    },
+    download3Day() {
+      let data = this.ingredients3day;
+      const mappedDataArray = [];
+      for (const key in data) {
+        const mappedData = {
+          ...data[key],
+        };
+        mappedDataArray.push(mappedData);
+      }
+      console.log(mappedDataArray);
+      console.log(data);
+      let src = mappedDataArray;
+      let result = src.map((x) => Object.values(x));
+      console.log(result);
+      const doc = new jspdf();
+      doc.text("Report the history of raw material usage for the past 3 days", 10, 10);
+      doc.text("Date"+":"+this.date_now, 10, 20);
+      doc.line(0, 30, 400, 30);
+      
+      autoTable(doc, {
+        head: [["Name", "Total(g)",]],
+        margin: { top: 35},
+        body: result,
+      });
+      doc.save("Report past 3 days"+" "+this.date_now+".pdf");
+    },
+  },
 };
 </script>
+
 <style scoped>
-.rounded{
-    border-radius:30px;
-}
-.ligne{
-  border-right: solid 1px #95a5a6;
+.overlap-icon {
+  position: absolute;
+  top: -33px;
+  text-align: center;
+  padding-top: 12px;
 }
 </style>

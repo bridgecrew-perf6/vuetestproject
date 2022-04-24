@@ -59,7 +59,7 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="3"  v-for="(info, index) in item.info" :key="index">
+                      <v-col cols="4"  v-for="(info, index) in item.info" :key="index">
                         <v-col row>{{ info.name_ingre }}
                           <v-checkbox
                             v-model="info.selected"
