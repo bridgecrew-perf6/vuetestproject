@@ -161,8 +161,8 @@ export default {
       let result = src.map((x) => Object.values(x));
       console.log(result);
       const doc = new jspdf();
-      doc.text("Report daily raw material usage history ", 10, 10)
-      doc.text("Date"+":"+this.date_now, 10, 20);
+      doc.text("Report daily", 10, 10)
+      doc.text("Date"+" "+":"+" "+this.date_now, 10, 20);
       doc.line(0, 30, 400, 30);
       
       autoTable(doc, {
@@ -171,6 +171,7 @@ export default {
         body: result,
       });
       doc.save("Report daily"+" "+this.date_now+".pdf");
+      alert("Download success")
     },
     download3Day() {
       let data = this.ingredients3day;
@@ -187,8 +188,8 @@ export default {
       let result = src.map((x) => Object.values(x));
       console.log(result);
       const doc = new jspdf();
-      doc.text("Report the history of raw material usage for the past 3 days", 10, 10);
-      doc.text("Date"+":"+this.date_now, 10, 20);
+      doc.text("Report past 3 days", 10, 10);
+      doc.text("Date"+" "+":"+" "+this.date_now, 10, 20);
       doc.line(0, 30, 400, 30);
       
       autoTable(doc, {
@@ -197,6 +198,7 @@ export default {
         body: result,
       });
       doc.save("Report past 3 days"+" "+this.date_now+".pdf");
+      alert("Download success")
     },
   },
 };

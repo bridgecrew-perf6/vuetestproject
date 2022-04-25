@@ -101,7 +101,7 @@ export default {
         { icon: "ramen_dining", text: "เส้นก๋วยเตี๋ยว", route: "/Noodle" },
         { icon: "history", text: "ประวัติการใช้วัตถุดิบ", route: "/dashboard" },
         { icon: "menu_book", text: "รายการอาหาร", route: "/Addmenu" },
-        { icon: "dashboard", text: "test", route: "/test" },
+        // { icon: "dashboard", text: "test", route: "/test" },
         // { icon: "dashboard", text: "tables", route: "/tables" },
         // { icon: "dashboard", text: "login", route: "/" },
       ],
